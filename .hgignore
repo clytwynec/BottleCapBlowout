@@ -1,0 +1,13 @@
+# use glob syntax.
+syntax: glob
+
+*.pyc
+*.pyo
+*.orig
+dist/**
+build**
+distribution**
+setup.py
+
+syntax: regexp
+.egg\\*
