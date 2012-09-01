@@ -22,8 +22,8 @@ class Entity:
 	def Rect(self):
 		return self.mRect
 
-	def CollisionRect(self):
-		return self.mCollisionRect
+	def CheckCollision(self, other):
+		return self.mRect.colliderect(other.Rect())
 
 	def Update(self, delta):
 		self.mRect.topleft = (self.mPosition[0], self.mPosition[1])
