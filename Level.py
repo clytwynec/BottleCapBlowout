@@ -33,6 +33,7 @@ class Level:
 
 		with open("levels/data/" + levelname, 'w') as file:
 			file.write(self.mBackgroundImageName)
+			file.write(self.mLevelLength)
 
 			for entity in self.mEntities:
 				file.write(entity.__class__.__name__)

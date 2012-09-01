@@ -8,6 +8,8 @@
 import pygame
 import sys
 
+import Colors
+
 from pygame.locals import *
 
 class GameKernel:
@@ -73,7 +75,7 @@ class GameKernel:
 	def FlipDisplay(self):
 		pygame.display.flip()
 		
-		#self.mDisplaySurface.fill(pygame.Color(0, 100, 100))
+		self.mDisplaySurface.fill(Colors.BLACK)
 
 	#####################################################
 	# ProcessSystemEvents
