@@ -7,14 +7,25 @@ class BottleCap(Entity):
 
 		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("Bottlecap.bmp")
 		self.mSolid = 1
-		self.mTime = 0
+		self.mFloatMax = 3
+		self.mFloatDistance = 0
+		self.mModifier = 1
 
 	def OnCollision(self, other):
-		print "Ouch, a box!!"
+		print "Ding!"
 
 	def Update(self, delta):
-		self.mTime += delta
+		self.mFloatDistance += (self.mModifier)
 
+<<<<<<< local
 		#self.mPosition[0] = int(float(self.mPosition[0]) + cos(self.mTime))
+=======
+		if (abs(self.mFloatDistance) >= self.mFloatMax):
+			self.mModifier *= -1
+>>>>>>> other
+
+		self.mPosition[0] = self.mPosition[1] + self.mFloatDistance
 
 		return Entity.Update(self, delta)
+
+		

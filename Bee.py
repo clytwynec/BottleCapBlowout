@@ -7,7 +7,6 @@ class Bee(Entity):
 
 		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("Bee1.bmp")
 		self.mSolid = 1
-		
 		self.mFloatMax = 3
 		self.mFloatDistance = 0
 		self.mModifier = 1
