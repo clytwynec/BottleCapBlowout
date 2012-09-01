@@ -5,6 +5,7 @@ class Balloon(Entity):
 
 	def __init__(self, kernel):
 		Entity.__init__(self, kernel)
+		#self.mCollideSound =
 		self.mValue = 0
 
 	def OnCollision(self, other):
@@ -12,16 +13,19 @@ class Balloon(Entity):
 			UpdateBasket(other.mValue)
 
 		if other.IsA('Obstacle'):
-			BalloonPop()
+			BalloonPop(self)
 
 		return
 
 
-	def BalloonPop():
+	def BalloonPop(self):
+		#self.mCollideSound.play()
+		self.mValue = 0 
 		return
 
 
  	def UpdateBasket(CapVal):
+ 		self.mValue += CapVal 
  		return
 
 			

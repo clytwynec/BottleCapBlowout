@@ -10,8 +10,10 @@ class Person(Entity):
 			UpdateScore(other.mValue)
 
 		if other.IsA('Obstacle'):
+			
 
 		return
 
 	def UpdateScore(PointsVal):
 		score += PointsVal
+		return score
