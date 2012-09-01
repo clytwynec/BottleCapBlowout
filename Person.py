@@ -4,7 +4,13 @@ import pygame
 class Person(Entity):
 	def __init__(self, kernel, level):
 		Entity.__init__(self, kernel, level)
-		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("playertest.bmp")
+		self.mRunImage, self.mRunRect = self.mKernel.ImageManager().LoadImage("player_run128.bmp")
+		self.mDuckImage, self.mDuckRect = self.mKernel.ImageManager().LoadImage("player_duck.bmp")
+		self.mJumpImage1, self.mJumpRect1 = self.mKernel.ImageManager().LoadImage("player_jump1.bmp")
+		self.mJumpImage2, self.mJumpRect2 = self.mKernel.ImageManager().LoadImage("player_jump2.bmp")
+
+		self.mImage = self.mRunImage
+		self.mRect = self.mRunRect
 
 		self.mVelocity =  [0,1]
 
@@ -14,9 +20,9 @@ class Person(Entity):
 		self.mScore = 0
 		self.mJumpCount = 0
 
-		self.mFrameRect = pygame.Rect(0, 0, 64, 64)
-		self.mFrameWidth = 64
-		self.mAnimationSpeed = 4
+		self.mFrameRect = pygame.Rect(0, 0, 128, 128)
+		self.mFrameWidth = 128
+		self.mAnimationSpeed = 5
 
 	def OnCollision(self, other):	
 		if other.IsA('Collectable') or other.IsA('Obstacle'):
@@ -35,6 +41,31 @@ class Person(Entity):
 		self.mScore += pointsVal
 		return self.mScore
 
+	def Jump(self):
+		self.mJumpCount +=1
+		if self.mJumpCount <= 2:
+			self.mVelocity[1] = -15
+
+		if (self.mJumpCount == 1):
+			self.mImage = self.mJumpImage1
+		else:
+			self.mImage = self.mJumpImage2
+
+		self.mFrameWidth = 0
+		self.mFrameRect = None
+
+	def Duck(self):
+		self.mImage = self.mDuckImage
+		self.mRect = self.mDuckRect
+		self.SetPosition([ self.mPosition[0], self.mGroundLevel - self.mRect.height ])
+		self.mFrameRect = pygame.Rect(0, 0, 44, 82)
+		self.mFrameWidth = 44
+
+	def Run(self):
+		self.mImage = self.mRunImage
+		self.mRect = self.mRunRect
+		self.mFrameWidth = 128
+		self.mFrameRect = pygame.Rect(0, 0, 128, 128)
 
 	def Update(self, delta):
 		self.mVelocity[1] += self.mGravity 
@@ -42,9 +73,16 @@ class Person(Entity):
 
 		if self.mPosition[1] > self.mGroundLevel - self.mRect.height:
 			self.mPosition[1] = self.mGroundLevel - self.mRect.height
-			self.mJumpCount = 0
+
+			if (self.mJumpCount > 0):
+				self.mJumpCount = 0
+				self.Run()
 
 			self.mVelocity[1] = 0
+
+		#Scrolling
+		self.mPosition[0] += 1
+
 		Entity.Update(self, delta)  
 
 	
