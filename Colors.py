@@ -1,1 +1,2 @@
 TRANSPARENT = (255, 0, 255)
+BLACK = (0, 0, 0)
