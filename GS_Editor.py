@@ -24,6 +24,9 @@ class GS_Editor(GameState):
 			"BottleCap",
 		]
 
+		self.mSaveLevelImage, self.mSaveLevelRect = kernel.ImageManager().LoadImage("saveLevel.bmp", False)
+		self.mSaveLevelRect.topleft = (912 - (self.mSaveLevelRect.width / 2), 700)
+
 	def Initialize(self):
 		self.mLevel.LoadLevel(self.mLevelName)
 
@@ -86,5 +89,7 @@ class GS_Editor(GameState):
 
 		if (self.mSelectedEntity):
 			pygame.draw.rect(self.mKernel.DisplaySurface(), Colors.RED, self.mSelectedEntity.Rect(), 2)
+
+		self.mKernel.DisplaySurface().blit(self.mSaveLevelImage, self.mSaveLevelRect)
 
 		return GameState.Update(self, delta)
