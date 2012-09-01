@@ -3,7 +3,7 @@ class Level:
 		self.mKernel = []
 		self.mLevelEntities = []
 		self.mEntities = []
-		
+
 		return
 
 	def LoadLevel(self, levelName):
@@ -20,7 +20,7 @@ class Level:
 			for entity in self.mLevelEntities:
 				# get the module name, and dynamically instantiate the class
 				EntityClass_ = getattr(module, entity)
-				rawEntity = EntityClass_()
+				rawEntity = EntityClass_(self.mKernel)
 				self.mEntities.append(rawEntity)
 
 		return
@@ -35,6 +35,10 @@ class Level:
 				file.write(entity.__class__.__name__)
 				file.write(entity.Position()[0])
 				file.write(entity.Position()[1])
+
+	def EntityAt(self, position):
+
+		return
 
 
 	def Update(self, delta):
