@@ -17,6 +17,7 @@ class GS_Game(GameState):
 
 		self.mGroundLevel = 570
 
+		self.mHighScores = {}
 
 	def Initialize(self):
 		self.mLevel.LoadLevel(self.mLevelName)
@@ -76,3 +77,13 @@ class GS_Game(GameState):
 		self.mBalloon.Draw()
 
 		return GameState.Update(self, delta)
+
+	def SaveScore(self):
+		if self.mLevelName in self.mHighScores:
+			if self.mPerson.mScore > self.mHighScores[self.mLevelName]:
+				self.mHighScores[self.mLevelName] = self.mPerson.mScore
+		elif:
+			self.mHighScores.append[self.mLevelName : self.mPerson.mScore]
+
+
+

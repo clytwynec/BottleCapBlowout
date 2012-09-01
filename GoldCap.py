@@ -1,7 +1,7 @@
 
 from Collectable import *
 
-class BottleCap(Collectable):
+class GoldCap(Collectable):
 	def __init__(self, kernel, level):
 		Collectable.__init__(self, kernel, level)
 
@@ -11,7 +11,7 @@ class BottleCap(Collectable):
 		self.mFloatMax = 3
 		self.mFloatDistance = 0
 		self.mModifier = 1
-		self.mValue = 5
+		self.mValue = 15
 
 
 	#def OnCollision(self, other):

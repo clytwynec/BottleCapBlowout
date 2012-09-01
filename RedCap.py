@@ -1,7 +1,7 @@
 
 from Collectable import *
 
-class BottleCap(Collectable):
+class RedCap(Collectable):
 	def __init__(self, kernel, level):
 		Collectable.__init__(self, kernel, level)
 
