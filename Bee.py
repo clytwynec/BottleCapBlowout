@@ -2,12 +2,12 @@ import math
 from Entity import *
 
 class Bee(Obstacle):
-	def __init__(self, kernel):
-		Obstacle.__init__(self, kernel)
+	def __init__(self, kernel, level):
+		Obstacle.__init__(self, kernel, level)
 
 		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("Bee1.bmp")
 		self.mSolid = 1
-		self.mFloatMax = 3
+		self.mFloatMax = 15
 		self.mFloatDistance = 0
 		self.mModifier = 1
 
@@ -21,14 +21,6 @@ class Bee(Obstacle):
 		if (abs(self.mFloatDistance) >= self.mFloatMax):
 			self.mModifier *= -1
 
-		self.mPosition[1] = self.mPosition[1] + self.mFloatDistance
+		self.mPosition[1] = self.mPosition[1] + self.mModifier
 
 		return Obstacle.Update(self, delta)
-
-
-
-
-
-
-
-

@@ -1,2 +1,4 @@
 TRANSPARENT = (255, 0, 255)
 BLACK = (0, 0, 0)
+LIGHT_GREY = (200, 200, 200)
+RED = (255, 0, 0)
