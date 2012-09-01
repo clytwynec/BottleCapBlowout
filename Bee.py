@@ -1,9 +1,9 @@
 import math
 from Entity import *
 
-class Bee(Entity):
+class Bee(Obstacle):
 	def __init__(self, kernel):
-		Entity.__init__(self, kernel)
+		Obstacle.__init__(self, kernel)
 
 		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("Bee1.bmp")
 		self.mSolid = 1
@@ -12,7 +12,8 @@ class Bee(Entity):
 		self.mModifier = 1
 
 	def OnCollision(self, other):
-		print "BUZZ BUZZ"
+		#print "BUZZ BUZZ"
+		self.mAudio 
 
 	def Update(self, delta):
 		self.mFloatDistance += (self.mModifier)
@@ -22,7 +23,7 @@ class Bee(Entity):
 
 		self.mPosition[1] = self.mPosition[1] + self.mFloatDistance
 
-		return Entity.Update(self, delta)
+		return Obstacle.Update(self, delta)
 
 
 
