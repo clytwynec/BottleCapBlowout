@@ -1,7 +1,7 @@
 import pygame
 import os
 import math
-
+from Person import *
 from GameState import *
 from Level import *
 from pygame.locals import *
@@ -27,8 +27,11 @@ class GS_Editor(GameState):
 		self.mSaveLevelImage, self.mSaveLevelRect = kernel.ImageManager().LoadImage("saveLevel.bmp", False)
 		self.mSaveLevelRect.topleft = (912 - (self.mSaveLevelRect.width / 2), 740)
 
+
 	def Initialize(self):
 		self.mLevel.LoadLevel(self.mLevelName)
+		self.mPerson = Person(self.mKernel, self.mKernel)
+		self.mPerson.SetPosition([200, 0])
 
 		currentHeight = 10
 		for i in range(len(self.mAvailableEntities)):
@@ -83,13 +86,18 @@ class GS_Editor(GameState):
 				self.mLevel.Scroll(-50)
 			elif (event.key == K_d):
 				self.mLevel.Scroll(50)
+			elif (event.key == K_SPACE):
+				self.mPerson.mVelocity[1] -= 15
+				print self.mPerson.mVelocity
 
 		return GameState.HandleEvent(self, event)
 
 	def Update(self, delta):
 		self.mLevel.Update(delta)
-
 		self.mLevel.Draw()
+
+		self.mPerson.Update(delta)
+		self.mPerson.Draw()
 
 		pygame.draw.rect(self.mKernel.DisplaySurface(), Colors.LIGHT_GREY, self.mEntityBox)
 

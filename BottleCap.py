@@ -12,7 +12,7 @@ class BottleCap(Collectable):
 		self.mFloatDistance = 0
 		self.mModifier = 1
 		self.mValue = 5
-		self.
+
 
 	#def OnCollision(self, other):
 		#print "Ding!"

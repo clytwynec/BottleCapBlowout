@@ -1,5 +1,5 @@
 from math import sin
-from Entity import *
+from Obstacle import *
 
 class Box(Obstacle):
 	def __init__(self, kernel, level):
