@@ -3,13 +3,16 @@ class Level:
 		self.mKernel = []
 		self.mLevelEntities = []
 		self.mEntities = []
-
+		self.mBackgroundImageName = ''
+		self.mLevelLength = 0
 		return
 
 	def LoadLevel(self, levelName):
 		levelList = open('levelName')
 		entityList = levelList.read.splitlines() 
-		for i in range(1, len(entityList)):
+		self.mBackgroundImageName = entityList[0]
+		self.mLevelLength = entityList[1]
+		for i in range(2, len(entityList)):
 			parts = entityList[i].split()
 			self.mLevelEntities.append({name:parts[0], position:(part[1], part[2])}) 
 		return
