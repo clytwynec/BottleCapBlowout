@@ -13,7 +13,7 @@ class GS_Editor(GameState):
 
 		self.mLevelName = levelName
 		self.mLevelLength = levelLength
-		self.mLevel = Level(kernel)
+		self.mLevel = Level(kernel, 800)
 
 		self.mEntityBox = pygame.Rect(800, 0, 224, 768)
 

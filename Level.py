@@ -4,14 +4,19 @@ import pygame
 from pygame.locals import *
 
 class Level:
-	def __init__(self, kernel):
+	def __init__(self, kernel, screenSize):
 		self.mKernel = kernel
+
 		self.mLevelEntities = []
 		self.mEntities = []
+
 		self.mBackgroundImageName = ''
+
 		self.mLevelLength = 0
 		self.mLevelName = ""
 		self.mLevelSurface = None
+
+		self.mScrenSize = screenSize
 
 		self.mLevelHeight = 768
 
@@ -169,7 +174,7 @@ class Level:
 		self.mCameraX += amount
 		if (self.mCameraX < 0):
 			self.mCameraX = 0
-		elif (self.mCameraX > self.mLevelLength):
+		elif (self.mCameraX > (self.mLevelLength - self.mScrenSize):
 			self.mCameraX = self.mLevelLength
 
 	##############################################
