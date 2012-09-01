@@ -35,8 +35,9 @@ class Level:
 	#	levelname - the level name (with extension)
 	# 		Lives in "data/levels/"
 	##############################################
-	def LoadLevel(self, levelName):
+	def LoadLevel(self, levelName, levelLength = 0):
 		self.mLevelName = levelName
+		self.mLevelLength = int(levelLength)
 
 		fullLevelName = os.path.join("data", "levels", levelName)
 

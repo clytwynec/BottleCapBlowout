@@ -8,10 +8,11 @@ from pygame.locals import *
 import Colors
 
 class GS_Editor(GameState):
-	def __init__(self, kernel, gsm, levelName):
+	def __init__(self, kernel, gsm, levelName, levelLength):
 		GameState.__init__(self, "Editor", kernel, gsm)
 
 		self.mLevelName = levelName
+		self.mLevelLength = levelLength
 		self.mLevel = Level(kernel)
 
 		self.mEntityBox = pygame.Rect(800, 0, 224, 768)
@@ -28,7 +29,7 @@ class GS_Editor(GameState):
 		self.mSaveLevelRect.topleft = (912 - (self.mSaveLevelRect.width / 2), 740)
 
 	def Initialize(self):
-		self.mLevel.LoadLevel(self.mLevelName)
+		self.mLevel.LoadLevel(self.mLevelName, self.mLevelLength)
 
 		currentHeight = 10
 		for i in range(len(self.mAvailableEntities)):
