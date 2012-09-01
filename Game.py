@@ -32,6 +32,7 @@ from GS_Editor import *
 #### Parse command line arguments
 optionParser = OptionParser()
 optionParser.add_option("-e", "--editlevel", help="Edit the level with a specified filename.  If no such level exists, create a new one.")
+optionParser.add_option("-l", "--levellength", help="When editing a level, this is the length of the level")
 (options, args) = optionParser.parse_args()
 
 print options.editlevel

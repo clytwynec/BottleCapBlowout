@@ -12,7 +12,7 @@ class GS_Editor(GameState):
 		GameState.__init__(self, "Editor", kernel, gsm)
 
 		self.mLevelName = levelName
-		self.mLevel = Level(kernel)
+		self.mLevel = Level(kernel, 800)
 
 		self.mEntityBox = pygame.Rect(800, 0, 224, 768)
 
@@ -83,9 +83,9 @@ class GS_Editor(GameState):
 					self.mLevel.AddEntity(newEntity, self.mLevel.ScreenToLevelCoordinates(event.pos))
 		elif (event.type == KEYDOWN):
 			if (event.key == K_a):
-				self.mLevel.Scroll(-50)
+				self.mLevel.Scroll(-16)
 			elif (event.key == K_d):
-				self.mLevel.Scroll(50)
+				self.mLevel.Scroll(16)
 			elif (event.key == K_SPACE):
 				self.mPerson.mVelocity[1] -= 15
 				print self.mPerson.mVelocity
@@ -93,6 +93,7 @@ class GS_Editor(GameState):
 		return GameState.HandleEvent(self, event)
 
 	def Update(self, delta):
+		self.mLevel.Scroll(1)
 		self.mLevel.Update(delta)
 		self.mLevel.Draw()
 
