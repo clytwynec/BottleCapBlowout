@@ -1,5 +1,8 @@
 import os
+import math
 import pygame
+
+import Colors
 
 from pygame.locals import *
 
@@ -16,11 +19,26 @@ class Level:
 		self.mLevelName = ""
 		self.mLevelSurface = None
 
-		self.mScrenSize = screenSize
+		self.mScreenSize = screenSize
 
 		self.mLevelHeight = 768
 
-		self.mBackgroundImage, self.mBackgroundRect = kernel.ImageManager().LoadImage("bg_test.bmp", False)
+		self.mBackgroundImages = []
+		self.mBackgroundX = []
+
+		for layer in range(3):
+			img, rect = kernel.ImageManager().LoadImage("bg_" + str(layer) + ".bmp")
+			self.mBackgroundImages.append(img)
+			self.mBackgroundX.append(0)
+
+		bgimg, bgrect = kernel.ImageManager().LoadImage("bg_test.bmp")
+		self.mBackgroundImages.append(bgimg)
+		self.mBackgroundX.append(0)
+
+		self.mBackgroundImages.reverse()
+		self.mBackgroundX.reverse()
+
+		self.mParallaxDamping = 2
 
 		self.mCameraX = 0
 
@@ -40,9 +58,9 @@ class Level:
 	#	levelname - the level name (with extension)
 	# 		Lives in "data/levels/"
 	##############################################
-	def LoadLevel(self, levelName, levelLength = 0):
+	def LoadLevel(self, levelName):
 		self.mLevelName = levelName
-		self.mLevelLength = int(levelLength)
+		self.mLevelLength = 2048
 
 		fullLevelName = os.path.join("data", "levels", levelName)
 
@@ -53,9 +71,6 @@ class Level:
 
 				self.mBackgroundImageName = entityList[0]
 				self.mLevelLength = int(entityList[1])
-
-				if (self.mLevelLength == 0):
-					self.mLevelLength = 2046
 
 				for i in range(2, len(entityList)):
 					parts = entityList[i].split()
@@ -79,7 +94,6 @@ class Level:
 	##############################################
 	def ProcessEntities(self):
 		# Set the level surface correctly:
-		print self.mLevelLength, self.mLevelHeight
 		self.mLevelSurface = pygame.Surface((self.mLevelLength, self.mLevelHeight))
 
 		# Spin through the loaded entities, eval them, and split them into collidable and other entities
@@ -171,11 +185,32 @@ class Level:
 		return [ screenCoord[0] + self.mCameraX, screenCoord[1] ]
 
 	def Scroll(self, amount):
-		self.mCameraX += amount
-		if (self.mCameraX < 0):
-			self.mCameraX = 0
-		elif (self.mCameraX > (self.mLevelLength - self.mScrenSize):
-			self.mCameraX = self.mLevelLength
+		scrollAmount = amount
+		rawScroll = self.mCameraX + amount
+		if (rawScroll < 0):
+			scrollAmount = self.mCameraX - rawScroll
+		elif (rawScroll > (self.mLevelLength - self.mScreenSize)):
+			scrollAmount = rawScroll - self.mCameraX
+
+		self.mCameraX += scrollAmount
+
+		for layer in range(len(self.mBackgroundX)):
+			self.mBackgroundX[layer] += scrollAmount * (layer)
+
+	def DrawBackgroundLayer(self, layerIndex):
+		image = self.mBackgroundImages[layerIndex]
+		x = self.mBackgroundX[layerIndex]
+
+		imgWidth, imgHeight = image.get_size()
+
+		start = x - int(math.floor(x / imgWidth) * imgWidth)
+		y = (400 - imgHeight) + (layerIndex * 50)
+
+		if (start > 0):
+			self.mLevelSurface.blit(image, (self.mCameraX + (imgWidth - start), y), (0, 0, start, imgHeight))
+
+		rect = pygame.Rect(start, 0, imgWidth - start, imgHeight)
+		self.mLevelSurface.blit(image, (self.mCameraX, y), rect)
 
 	##############################################
 	# Draw
@@ -184,7 +219,10 @@ class Level:
 	# itself
 	##############################################
 	def Draw(self):
-		self.mLevelSurface.blit(self.mBackgroundImage, self.mBackgroundRect)
+		self.mLevelSurface.fill(Colors.BLACK)
+		self.mLevelSurface.blit(self.mBackgroundImages[0], (0, 0))
+		for layer in range(1, len(self.mBackgroundImages)):
+			self.DrawBackgroundLayer(layer)
 
 		for entity in self.mEntities:
 			entity.Draw()

@@ -8,11 +8,10 @@ from pygame.locals import *
 import Colors
 
 class GS_Editor(GameState):
-	def __init__(self, kernel, gsm, levelName, levelLength):
+	def __init__(self, kernel, gsm, levelName):
 		GameState.__init__(self, "Editor", kernel, gsm)
 
 		self.mLevelName = levelName
-		self.mLevelLength = levelLength
 		self.mLevel = Level(kernel, 800)
 
 		self.mEntityBox = pygame.Rect(800, 0, 224, 768)
@@ -29,7 +28,7 @@ class GS_Editor(GameState):
 		self.mSaveLevelRect.topleft = (912 - (self.mSaveLevelRect.width / 2), 740)
 
 	def Initialize(self):
-		self.mLevel.LoadLevel(self.mLevelName, self.mLevelLength)
+		self.mLevel.LoadLevel(self.mLevelName)
 
 		currentHeight = 10
 		for i in range(len(self.mAvailableEntities)):
@@ -81,13 +80,14 @@ class GS_Editor(GameState):
 					self.mLevel.AddEntity(newEntity, self.mLevel.ScreenToLevelCoordinates(event.pos))
 		elif (event.type == KEYDOWN):
 			if (event.key == K_a):
-				self.mLevel.Scroll(-50)
+				self.mLevel.Scroll(-16)
 			elif (event.key == K_d):
-				self.mLevel.Scroll(50)
+				self.mLevel.Scroll(16)
 
 		return GameState.HandleEvent(self, event)
 
 	def Update(self, delta):
+		self.mLevel.Scroll(1)
 		self.mLevel.Update(delta)
 
 		self.mLevel.Draw()

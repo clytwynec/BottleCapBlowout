@@ -2,6 +2,8 @@ import pygame
 import os
 import Colors
 
+from pygame.locals import *
+
 class ImageManager:
 	def __init__(self, kernel):
 		self.mLoadedImages = {}
@@ -16,6 +18,7 @@ class ImageManager:
 
 			if (transparent):
 				image.set_colorkey(Colors.TRANSPARENT);
+				image.set_alpha(255, RLEACCEL)
 			
 			self.mLoadedImages[filename] = image
 			return image, image.get_rect()

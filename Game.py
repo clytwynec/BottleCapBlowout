@@ -44,7 +44,7 @@ ticker = kernel.Ticker()
 
 #### Initialize game states
 gsm = GameStateManager()
-gsm.RegisterState(GS_Editor(kernel, gsm, options.editlevel, options.levellength))
+gsm.RegisterState(GS_Editor(kernel, gsm, options.editlevel))
 
 #if (options.editlevel):
 gsm.SwitchState("Editor")
