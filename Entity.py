@@ -28,4 +28,6 @@ class Entity:
 		return
 
 	def Draw(self):
+
 		return
+	
