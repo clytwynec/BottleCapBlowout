@@ -132,12 +132,12 @@ class GS_Editor(GameState):
 	def Update(self, delta):
 		self.mLevel.Update(delta)
 
-		self.mLevel.CheckCollisions(self.mPerson)
+		#self.mLevel.CheckCollisions(self.mPerson)
 
-		self.mPerson.Update(delta)
+		#self.mPerson.Update(delta)
 
 		self.mLevel.Draw()
-		self.mPerson.Draw()
+		#self.mPerson.Draw()
 
 		pygame.draw.line(self.mKernel.DisplaySurface(), Colors.BLUE, (0, self.mGroundLevel), (800, self.mGroundLevel), 4)
 

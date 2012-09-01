@@ -16,11 +16,12 @@ class Person(Entity):
 		self.mAnimationSpeed = 4
 
 	def OnCollision(self, other):	
-		if other.IsA('Collectable'):
+		if other.IsA('Collectable') or other.IsA('Obstacle'):
 			self.UpdateScore(other.mValue)
 
-		if other.IsA('Obstacle'):
+		if other.IsA('Balloon'):
 			self.UpdateScore(other.mValue)
+			other.EmptyCoins()
 
 		return
 

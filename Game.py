@@ -21,6 +21,7 @@ from pygame.locals import *
 from GameKernel import *
 from GameStateManager import *
 from GS_Editor import *
+from GS_MainMenu import *
 
 #random.seed(0)
 
@@ -44,10 +45,13 @@ ticker = kernel.Ticker()
 
 #### Initialize game states
 gsm = GameStateManager()
+gsm.RegisterState(GS_MainMenu(kernel, gsm))
 gsm.RegisterState(GS_Editor(kernel, gsm, options.editlevel))
 
-#if (options.editlevel):
-gsm.SwitchState("Editor")
+if (options.editlevel):
+	gsm.SwitchState("Editor")
+else:
+	gsm.SwitchState("MainMenu")
 
 font = pygame.font.SysFont("Helvetica", 12)
 
