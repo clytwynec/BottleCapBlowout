@@ -15,6 +15,8 @@ class Level:
 		for i in range(2, len(entityList)):
 			parts = entityList[i].split()
 			self.mLevelEntities.append({name:parts[0], position:(part[1], part[2])}) 
+
+		self.ProcessEntities()
 		return
 
 	def ProcessEntities(self):

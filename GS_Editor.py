@@ -7,15 +7,19 @@ from Level import *
 from pygame.locals import *
 
 class GS_Editor(GameState):
-	def __init__(self, kernel, gsm):
+	def __init__(self, kernel, gsm, levelname):
 		GameState.__init__(self, "Editor", kernel, gsm)
 
+		self.mLevel = Level()
+
 	def Initialize(self):
+
+		self.mLevel.LoadLevel(levelname)
 
 		return GameState.Initialize(self)
 
 	def Destroy(self):
-		
+
 		return GameState.Destroy(self)
 
 	def Pause(self):
@@ -34,5 +38,8 @@ class GS_Editor(GameState):
 		return GameState.HandleEvent(self, event)
 
 	def Update(self, delta):
-		
+		self.mLevel.Update(delta)
+
+		self.mLevel.Draw()
+
 		return GameState.Update(self, delta)
