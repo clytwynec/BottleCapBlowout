@@ -9,7 +9,7 @@ class Balloon(Entity):
 		#self.mCollideSound =
 		self.mValue = 0
 		self.mBlown = 0  # 0 = blower off, 1 = blower on
-		self.mGravity = 1 #slope
+		self.mGravity = 2 #slope
 		self.mBlowStrength = 3
 		self.mTicker = 0 #adjust gravity to be less than 1 pixel/frame
 		self.mVelocity =  [0, 0]
@@ -59,6 +59,9 @@ class Balloon(Entity):
 					self.mPosition[0] -= self.mVelocity[0]  
 
  		self.mTicker += 1
+
+ 		# Scrolling
+ 		self.mPosition[0] += 1
 
 		Entity.Update(self, delta)  
 

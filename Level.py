@@ -98,7 +98,7 @@ class Level:
 	##############################################
 	def ProcessEntities(self):
 		# Set the level surface correctly:
-		self.mLevelSurface = pygame.Surface((self.mLevelLength, self.mLevelHeight))
+		self.mLevelSurface = pygame.Surface((self.mLevelLength, self.mLevelHeight)).convert()
 
 		# Spin through the loaded entities, eval them, and split them into collidable and other entities
 		if (len(self.mLevelEntities) > 0):
@@ -171,10 +171,16 @@ class Level:
 	# collisions with other entities
 	##############################################
 	def CheckCollisions(self, first):
+		collisions = []
 		for second in self.mEntities:
 			if (first != second):
 				if (first.CheckCollision(second)):
-					first.OnCollision(second)
+					collisions.append((first, second))
+
+		for collision in collisions:
+			first, second = collision
+			first.OnCollision(second)
+			second.OnCollision(first)
 
 
 	##############################################
@@ -195,10 +201,11 @@ class Level:
 	def Scroll(self, amount):
 		scrollAmount = amount
 		rawScroll = self.mCameraX + amount
+
 		if (rawScroll < 0):
-			scrollAmount = self.mCameraX - rawScroll
+			scrollAmount = self.mCameraX
 		elif (rawScroll > (self.mLevelLength - self.mScreenSize)):
-			scrollAmount = rawScroll - self.mCameraX
+			scrollAmount = (self.mLevelLength - self.mScreenSize) - self.mCameraX
 
 		self.mCameraX += scrollAmount
 

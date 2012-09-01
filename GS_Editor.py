@@ -11,7 +11,7 @@ class GS_Editor(GameState):
 		GameState.__init__(self, "Editor", kernel, gsm)
 
 		self.mLevelName = levelName
-		self.mLevel = Level(kernel, 800)
+		self.mLevel = Level(kernel, 650)
 
 		self.mEntityBox = pygame.Rect(650, 0, 150, 600)
 
@@ -127,6 +127,7 @@ class GS_Editor(GameState):
 		#self.mLevel.Update(delta)
 
 		self.mLevel.Draw()
+		self.mLevel.Blit()
 
 		pygame.draw.line(self.mKernel.DisplaySurface(), Colors.BLUE, (0, self.mGroundLevel), (800, self.mGroundLevel), 4)
 

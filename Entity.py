@@ -7,6 +7,7 @@ class Entity:
 		self.mPosition = [0, 0]
 
 		self.mImage = None
+		self.mImageRect = None
 		self.mFrameRect = None
 		self.mRect = None
 		self.mCollisionRect = None
@@ -42,7 +43,7 @@ class Entity:
 			self.mAnimationTick = 0
 			self.mFrameRect.move_ip((self.mFrameWidth, 0))
 
-			if (self.mFrameRect.right > self.mRect.width):
+			if (self.mFrameRect.right > self.mImage.get_rect().width):
 				self.mFrameRect.left = 0
 
 		return
