@@ -4,9 +4,10 @@ class Person(Entity):
 	def __init__(self, kernel, level):
 		Entity.__init__(self, kernel, level)
 		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("Box1.bmp")
-		self.mVelocity =  [0,0]
+		self.mVelocity =  [0,1]
 		self.mGravity = 1
 		self.mGroundLevel = 500 
+		self.mJumpCount = 0
 
 	def OnCollision(self, other):
 		
@@ -27,11 +28,11 @@ class Person(Entity):
 
 
 	def Update(self, delta):
-		
 		self.mVelocity[1] += self.mGravity 
 		self.mPosition[1] += self.mVelocity[1] 
 		if self.mPosition[1] > self.mGroundLevel:
 			self.mPosition[1] = self.mGroundLevel
+			self.mJumpCount = 0
 			self.mVelocity[1] = 0
 		Entity.Update(self, delta)  
 

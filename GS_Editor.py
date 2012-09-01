@@ -2,6 +2,7 @@ import pygame
 import os
 import math
 from Person import *
+from Balloon import *
 from GameState import *
 from Level import *
 from pygame.locals import *
@@ -30,8 +31,13 @@ class GS_Editor(GameState):
 
 	def Initialize(self):
 		self.mLevel.LoadLevel(self.mLevelName)
+
 		self.mPerson = Person(self.mKernel, self.mKernel)
 		self.mPerson.SetPosition([200, 0])
+
+		self.mBalloon = Balloon(self.mKernel, self.mKernel)
+		self.mBalloon.SetPosition([400,0])
+		self.mBalloon.mGroundLevel = 500
 
 		currentHeight = 10
 		for i in range(len(self.mAvailableEntities)):
@@ -81,14 +87,24 @@ class GS_Editor(GameState):
 
 					newEntity = _Entity(self.mKernel, self.mLevel)
 					self.mLevel.AddEntity(newEntity, self.mLevel.ScreenToLevelCoordinates(event.pos))
+		
 		elif (event.type == KEYDOWN):
 			if (event.key == K_a):
 				self.mLevel.Scroll(-16)
 			elif (event.key == K_d):
 				self.mLevel.Scroll(16)
-			elif (event.key == K_SPACE):
+			elif (event.key == K_UP):
+				self.mJumpCount +=1
+				if self.mJumpCount < 2:
+					self.mPerson.mVelocity[1] -= 15
+			elif (event.key == K_DOWN):
 				self.mPerson.mVelocity[1] -= 15
-				print self.mPerson.mVelocity
+			elif (event.key == K_SPACE):
+				self.mBalloon.mBlown = 1
+
+		elif(event.type == KEYUP):
+			if (event.key == K_SPACE):
+				self.mBalloon.mBlown = 0  
 
 		return GameState.HandleEvent(self, event)
 
@@ -99,6 +115,9 @@ class GS_Editor(GameState):
 
 		self.mPerson.Update(delta)
 		self.mPerson.Draw()
+
+		self.mBalloon.Update(delta)
+		self.mBalloon.Draw()
 
 		pygame.draw.rect(self.mKernel.DisplaySurface(), Colors.LIGHT_GREY, self.mEntityBox)
 
