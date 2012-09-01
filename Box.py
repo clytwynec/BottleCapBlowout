@@ -8,6 +8,7 @@ class Box(Obstacle):
 		#self.mCollideSound =
 		self.mSolid = 1
 		self.mTime = 0
+		self.mValue = 0
 
 	#def OnCollision(self, other):
 		#print "Ouch, a box!!"
