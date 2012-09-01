@@ -11,6 +11,7 @@ import sys
 import Colors
 
 from pygame.locals import *
+from ImageManager import *
 
 class GameKernel:
 	def __init__(self):
@@ -20,6 +21,7 @@ class GameKernel:
 
 		self.mDisplaySurface = None
 		self.mTicker = pygame.time.Clock()
+		self.mImageManager = ImageManager()
 
 	#####################################################
 	# InitializeDisplay
@@ -66,6 +68,14 @@ class GameKernel:
 	#####################################################
 	def Ticker(self):
 		return self.mTicker
+
+	#####################################################
+	# ImageManager
+	#
+	# Returns the image manager.
+	#####################################################
+	def ImageManager(self):
+		return self.mImageManager
 
 	#####################################################
 	# FlipDisplay

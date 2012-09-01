@@ -13,7 +13,7 @@ class Level:
 		fullLevelName = os.path.join("data", "levels", levelName)
 		if os.path.isfile(fullLevelName):
 			with open(fullLevelName) as levelList:
-				entityList = levelList.read.splitlines() 
+				entityList = levelList.read().splitlines() 
 				self.mBackgroundImageName = entityList[0]
 				self.mLevelLength = entityList[1]
 				for i in range(2, len(entityList)):

@@ -22,12 +22,13 @@ class Entity:
 		return self.mCollisionRect
 
 	def Update(self, delta):
+		self.mRect.topleft = self.mPosition
 		return
 
 	def OnCollision(self, other):
 		return
 
 	def Draw(self):
-
+		if (self.mImage):
+			self.mKernel.DisplaySurface.blit(self.mImage, self.mRect)
 		return
-	
