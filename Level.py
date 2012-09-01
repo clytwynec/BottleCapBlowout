@@ -37,7 +37,9 @@ class Level:
 				file.write(entity.Position()[1])
 
 	def EntityAt(self, position):
-
+		for entity in self.mEntities:
+			if entity.Rect().collide_point(position):
+				return entity
 		return
 
 
