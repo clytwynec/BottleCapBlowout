@@ -8,6 +8,8 @@ class Level:
 		self.mEntities = []
 		self.mBackgroundImageName = ''
 		self.mLevelLength = 0
+
+		self.mBackgroundImage, self.mBackgroundRect = kernel.ImageManager().LoadImage("bg_test.bmp", False)
 		return
 
 	def LoadLevel(self, levelName):
@@ -71,6 +73,8 @@ class Level:
 		return
 
 	def Draw(self):
+		self.mKernel.DisplaySurface().blit(self.mBackgroundImage, self.mBackgroundRect)
+
 		for entity in self.mEntities:
 			entity.Draw()
 

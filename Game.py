@@ -38,7 +38,7 @@ print options.editlevel
 
 #### Kick off the graphics/window system
 kernel = GameKernel()
-screenSurface = kernel.InitializeDisplay((800, 600))
+screenSurface = kernel.InitializeDisplay((1024, 768))
 ticker = kernel.Ticker()
 
 #### Initialize game states
@@ -55,11 +55,6 @@ while (1):
 
 	delta = ticker.get_time()
 
-	FPSSurf = font.render("FPS: " + str(int(ticker.get_fps())), True, (255, 255, 255))
-	FPSRect = FPSSurf.get_rect()
-	FPSRect.topright = screenSurface.get_rect().topright
-	screenSurface.blit(FPSSurf, FPSRect)
-
 	gsm.Update(delta)
 
 	for event in pygame.event.get():
@@ -68,6 +63,11 @@ while (1):
 			sys.exit()
 		else:
 			gsm.GetActiveState().HandleEvent(event)
+
+	FPSSurf = font.render("FPS: " + str(int(ticker.get_fps())), True, (255, 255, 255))
+	FPSRect = FPSSurf.get_rect()
+	FPSRect.topright = screenSurface.get_rect().topright
+	screenSurface.blit(FPSSurf, FPSRect)
 
 	kernel.FlipDisplay()
 

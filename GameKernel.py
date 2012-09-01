@@ -21,7 +21,7 @@ class GameKernel:
 
 		self.mDisplaySurface = None
 		self.mTicker = pygame.time.Clock()
-		self.mImageManager = ImageManager()
+		self.mImageManager = ImageManager(self)
 
 	#####################################################
 	# InitializeDisplay

@@ -15,6 +15,6 @@ class BottleCap(Entity):
 	def Update(self, delta):
 		self.mTime += delta
 
-		self.mPosition[0] = int(float(self.mPosition[0]) + cos(self.mTime))
+		#self.mPosition[0] = int(float(self.mPosition[0]) + cos(self.mTime))
 
 		return Entity.Update(self, delta)

@@ -9,7 +9,7 @@ class Bee(Entity):
 		self.mSolid = 1
 		self.mTime = 0
 
-		self.mFloatMax = 10
+		self.mFloatMax = 5
 		self.mFloatDistance = 0
 		self.mModifier = 1
 
