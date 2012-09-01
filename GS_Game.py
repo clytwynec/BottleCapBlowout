@@ -21,12 +21,12 @@ class GS_Game(GameState):
 	def Initialize(self):
 		self.mLevel.LoadLevel(self.mLevelName)
 
-		self.mPerson = Person(self.mKernel, self.mKernel)
-		self.mPerson.SetPosition([200, 0])
+		self.mPerson = Person(self.mKernel, self.mLevel)
+		self.mPerson.SetPosition([0, self.mGroundLevel])
 		self.mPerson.SetGroundLevel(self.mGroundLevel)
 
-		self.mBalloon = Balloon(self.mKernel, self.mKernel)
-		self.mBalloon.SetPosition([400,0])
+		self.mBalloon = Balloon(self.mKernel, self.mLevel)
+		self.mBalloon.SetPosition([400, 0])
 		self.mBalloon.mGroundLevel = 500
 
 		return GameState.Initialize(self)
@@ -49,21 +49,22 @@ class GS_Game(GameState):
 			sys.exit()
 		elif (event.type == KEYDOWN):
 			if (event.key == K_UP):
-				self.mPerson.mJumpCount +=1
-				if self.mPerson.mJumpCount <= 2:
-					self.mPerson.mVelocity[1] -= 15
+				self.mPerson.Jump()
 			elif (event.key == K_DOWN):
-				self.mPerson.mVelocity[1] -= 15
+				self.mPerson.Duck()
 			elif (event.key == K_SPACE):
 				self.mBalloon.mBlown = 1
 
 		elif(event.type == KEYUP):
 			if (event.key == K_SPACE):
 				self.mBalloon.mBlown = 0  
+			elif (event.key == K_DOWN):
+				self.mPerson.Run()
 
 		return GameState.HandleEvent(self, event)
 
 	def Update(self, delta):
+		self.mLevel.Scroll(1)
 		self.mLevel.Update(delta)
 
 		self.mLevel.CheckCollisions(self.mPerson)
@@ -74,5 +75,5 @@ class GS_Game(GameState):
 		self.mLevel.Draw()
 		self.mPerson.Draw()
 		self.mBalloon.Draw()
-
+		self.mLevel.Blit()
 		return GameState.Update(self, delta)

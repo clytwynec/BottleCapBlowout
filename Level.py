@@ -25,18 +25,22 @@ class Level:
 
 		self.mBackgroundImages = []
 		self.mBackgroundX = []
+		self.mBackgroundY = []
 
 		for layer in range(3):
 			img, rect = kernel.ImageManager().LoadImage("bg_" + str(layer) + ".bmp")
 			self.mBackgroundImages.append(img)
 			self.mBackgroundX.append(0)
+			self.mBackgroundY.append(500 - img.get_rect().height - (layer * 50))
 
 		bgimg, bgrect = kernel.ImageManager().LoadImage("bg_test.bmp")
 		self.mBackgroundImages.append(bgimg)
 		self.mBackgroundX.append(0)
+		self.mBackgroundY.append(0)
 
 		self.mBackgroundImages.reverse()
 		self.mBackgroundX.reverse()
+		self.mBackgroundY.reverse()
 
 		self.mParallaxDamping = 2
 
@@ -168,8 +172,9 @@ class Level:
 	##############################################
 	def CheckCollisions(self, first):
 		for second in self.mEntities:
-			if (first != second and first.CheckCollision(second)):
-				first.OnCollision(second)
+			if (first != second):
+				if (first.CheckCollision(second)):
+					first.OnCollision(second)
 
 
 	##############################################
@@ -207,7 +212,7 @@ class Level:
 		imgWidth, imgHeight = image.get_size()
 
 		start = x - int(math.floor(x / imgWidth) * imgWidth)
-		y = (400 - imgHeight) + (layerIndex * 50)
+		y = self.mBackgroundY[layerIndex]
 
 		if (start > 0):
 			self.mLevelSurface.blit(image, (self.mCameraX + (imgWidth - start), y), (0, 0, start, imgHeight))
@@ -220,16 +225,17 @@ class Level:
 	#
 	# Draw the entities of the level and the level
 	# itself
-	##############################################
+	##############################################	
 	def Draw(self):
 		self.mLevelSurface.fill(Colors.BLACK)
-		self.mLevelSurface.blit(self.mBackgroundImages[0], (0, 0))
-		for layer in range(1, len(self.mBackgroundImages)):
+		for layer in range(len(self.mBackgroundImages)):
 			self.DrawBackgroundLayer(layer)
 
 		for entity in self.mEntities:
 			entity.Draw()
 
+		return
+
+	def Blit(self):		
 		self.mKernel.DisplaySurface().blit(self.mLevelSurface, self.mKernel.DisplaySurface().get_rect(), pygame.Rect(self.mCameraX, 0, 1024, self.mLevelHeight))
 
-		return

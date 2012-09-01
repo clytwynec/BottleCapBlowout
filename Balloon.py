@@ -5,7 +5,7 @@ class Balloon(Entity):
 
 	def __init__(self, kernel, level):
 		Entity.__init__(self, kernel, level)
-		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("Box1.bmp")
+		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("Balloon1.bmp")
 		#self.mCollideSound =
 		self.mValue = 0
 		self.mBlown = 0  # 0 = blower off, 1 = blower on

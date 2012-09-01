@@ -22,5 +22,6 @@ class GS_MainMenu(GS_MenuBase):
 
 	def Update(self, delta):
 		self.mLevel.Draw()
-
+		self.mLevel.Blit()
+		
 		GS_MenuBase.Update(self, delta)
