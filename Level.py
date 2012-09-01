@@ -1,8 +1,9 @@
 import os
 
+
 class Level:
 	def __init__(self, kernel):
-		self.mKernel = []
+		self.mKernel = kernel
 		self.mLevelEntities = []
 		self.mEntities = []
 		self.mBackgroundImageName = ''
@@ -18,7 +19,7 @@ class Level:
 				self.mLevelLength = entityList[1]
 				for i in range(2, len(entityList)):
 					parts = entityList[i].split()
-					self.mLevelEntities.append({"name":parts[0], "position":(parts[1], parts[2])}) 
+					self.mLevelEntities.append({"name":parts[0], "position":[int(parts[1]), int(parts[2])]}) 
 
 		self.ProcessEntities()
 		return
@@ -28,8 +29,10 @@ class Level:
 		if (len(self.mLevelEntities) > 0):
 			for entity in self.mLevelEntities:
 				# get the module name, and dynamically instantiate the class
-				EntityClass_ = getattr(module, entity)
+				mod = __import__(entity["name"])
+				EntityClass_ = getattr(mod, entity["name"])
 				rawEntity = EntityClass_(self.mKernel)
+				rawEntity.SetPosition(entity["position"])
 				self.mEntities.append(rawEntity)
 
 		return
@@ -51,6 +54,10 @@ class Level:
 			if entity.Rect().collide_point(position):
 				return entity
 		return
+
+
+	def CheckCollisions(self):
+		hitPairs = []
 
 
 	def Update(self, delta):

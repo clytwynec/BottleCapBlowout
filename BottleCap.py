@@ -5,7 +5,7 @@ class BottleCap(Entity):
 	def __init__(self, kernel):
 		Entity.__init__(self, kernel)
 
-		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("Box.bmp")
+		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("Bottlecap.bmp")
 		self.mSolid = 1
 		self.mTime = 0
 
@@ -15,6 +15,6 @@ class BottleCap(Entity):
 	def Update(self, delta):
 		self.mTime += delta
 
-		self.mPosition[0] += cos(self.mTime)
+		self.mPosition[0] = int(float(self.mPosition[0]) + cos(self.mTime))
 
 		return Entity.Update(self, delta)
