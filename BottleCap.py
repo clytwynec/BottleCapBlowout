@@ -1,5 +1,5 @@
 from math import cos
-from Entity import *
+from Collectable import *
 
 class BottleCap(Collectable):
 	def __init__(self, kernel, level):

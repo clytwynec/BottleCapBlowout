@@ -6,6 +6,6 @@ class Collectable(Entity):
 
 
 	def OnCollision(self, other):
-		if !other.IsA('Obstacle'):
+		if not other.IsA('Obstacle'):
 			Level.RemoveEntity(self)
 		return

@@ -1,5 +1,5 @@
 import math
-from Entity import *
+from Obstacle import *
 
 class Bee(Obstacle):
 	def __init__(self, kernel, level):
