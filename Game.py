@@ -1,5 +1,5 @@
 ###################################################################################
-# main.py
+# Game.py
 #
 # The kickoff script/main loop.  Sets up the different game systems, and then
 # enters the main loop.  Runs until we receive a system event to quit the game
@@ -13,7 +13,7 @@ import sys
 import os
 import math
 import pygame
-import random
+import random 
 
 from pygame.locals import *
 
@@ -31,6 +31,10 @@ from GS_Editor import *
 
 #### Parse command line arguments
 optionParser = OptionParser()
+optionParser.add_option("-e", "--editlevel", help="Edit the level with a specified filename.  If no such level exists, create a new one.")
+(options, args) = optionParser.parse_args()
+
+print options.editlevel
 
 #### Kick off the graphics/window system
 kernel = GameKernel()
@@ -41,6 +45,7 @@ ticker = kernel.Ticker()
 gsm = GameStateManager()
 gsm.RegisterState(GS_Editor(kernel, gsm))
 
+#if (options.editlevel):
 gsm.SwitchState("Editor")
 
 font = pygame.font.SysFont("Helvetica", 12)

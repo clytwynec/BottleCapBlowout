@@ -1,8 +1,6 @@
 import pygame
 import os
 import math
-import Tkinter
-import tkMessageBox
 
 from GameState import *
 from Level import *
@@ -13,14 +11,11 @@ class GS_Editor(GameState):
 		GameState.__init__(self, "Editor", kernel, gsm)
 
 	def Initialize(self):
-		Tkinter.Tk().wm_withdraw()
-		levelName = tkMessageBox.askstring("New Level", "Enter a Level Name:");
-
-		print levelName
 
 		return GameState.Initialize(self)
 
 	def Destroy(self):
+		
 		return GameState.Destroy(self)
 
 	def Pause(self):
