@@ -18,7 +18,9 @@ class Entity:
 		self.mRect.topleft = (self.mPosition[0], self.mPosition[1])
 
 	def IsA(self, classname):
-		return isinstance(self, classname)
+		module = __import__(classname)
+		_Classname = getattr(module, classname)
+		return isinstance(self, _Classname)
 
 	def Rect(self):
 		return self.mRect

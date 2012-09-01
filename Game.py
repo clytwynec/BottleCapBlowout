@@ -39,7 +39,7 @@ print options.editlevel
 
 #### Kick off the graphics/window system
 kernel = GameKernel()
-screenSurface = kernel.InitializeDisplay((1024, 768))
+screenSurface = kernel.InitializeDisplay((800, 600))
 ticker = kernel.Ticker()
 
 #### Initialize game states

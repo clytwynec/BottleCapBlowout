@@ -143,7 +143,7 @@ class Level:
 	#
 	# Removes an entity from the level
 	##############################################
-	def RemoveEntity(entity):
+	def RemoveEntity(self, entity):
 		if (entity in self.mEntities):
 			self.mEntities.remove(entity)
 
@@ -155,7 +155,7 @@ class Level:
 	##############################################
 	def EntityAt(self, position):
 		for entity in self.mEntities:
-			if entity.Rect().collide_point(position):
+			if entity.Rect().collidepoint(self.ScreenToLevelCoordinates(position)):
 				return entity
 		return
 
@@ -166,8 +166,10 @@ class Level:
 	# Spins through the entities and checks for
 	# collisions with other entities
 	##############################################
-	def CheckCollisions(self):
-		hitPairs = []
+	def CheckCollisions(self, first):
+		for second in self.mEntities:
+			if (first != second and first.CheckCollision(second)):
+				first.OnCollision(second)
 
 
 	##############################################
@@ -178,6 +180,7 @@ class Level:
 	def Update(self, delta):
 		for entity in self.mEntities:
 			entity.Update(delta)
+			self.CheckCollisions(entity)
 
 		return
 

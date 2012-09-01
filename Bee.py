@@ -12,9 +12,9 @@ class Bee(Obstacle):
 		self.mModifier = 1
 		self.mValue = 0
 
-	#def OnCollision(self, other):
-		#print "BUZZ BUZZ"
+	def OnCollision(self, other):
 		##Audio and Animations here 
+		return
 
 	def Update(self, delta):
 		self.mFloatDistance += (self.mModifier)
