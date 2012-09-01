@@ -7,14 +7,15 @@ from Level import *
 from pygame.locals import *
 
 class GS_Editor(GameState):
-	def __init__(self, kernel, gsm, levelname):
+	def __init__(self, kernel, gsm, levelName):
 		GameState.__init__(self, "Editor", kernel, gsm)
 
-		self.mLevel = Level()
+		self.mLevelName = levelName
+		self.mLevel = Level(kernel)
 
 	def Initialize(self):
 
-		self.mLevel.LoadLevel(levelname)
+		self.mLevel.LoadLevel(self.mLevelName)
 
 		return GameState.Initialize(self)
 

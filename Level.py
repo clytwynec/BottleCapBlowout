@@ -1,3 +1,5 @@
+import os
+
 class Level:
 	def __init__(self, kernel):
 		self.mKernel = []
@@ -8,13 +10,15 @@ class Level:
 		return
 
 	def LoadLevel(self, levelName):
-		levelList = open('levelName')
-		entityList = levelList.read.splitlines() 
-		self.mBackgroundImageName = entityList[0]
-		self.mLevelLength = entityList[1]
-		for i in range(2, len(entityList)):
-			parts = entityList[i].split()
-			self.mLevelEntities.append({name:parts[0], position:(part[1], part[2])}) 
+		fullLevelName = os.path.join("data", "levels", levelName)
+		if os.path.isfile(fullLevelName):
+			with open(fullLevelName) as levelList:
+				entityList = levelList.read.splitlines() 
+				self.mBackgroundImageName = entityList[0]
+				self.mLevelLength = entityList[1]
+				for i in range(2, len(entityList)):
+					parts = entityList[i].split()
+					self.mLevelEntities.append({name:parts[0], position:(part[1], part[2])}) 
 
 		self.ProcessEntities()
 		return
@@ -33,7 +37,7 @@ class Level:
 	def SaveLevel(self, levelname):
 		lines = []
 
-		with open("levels/data/" + levelname, 'w') as file:
+		with open(os.path.join("data", "levels", levelname), 'w') as file:
 			file.write(self.mBackgroundImageName)
 			file.write(self.mLevelLength)
 
