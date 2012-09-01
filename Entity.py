@@ -3,7 +3,7 @@ class Entity:
 		self.mKernel = kernel
 
 		self.mSolid = 0
-		self.mPosition = (0, 0)
+		self.mPosition = [0, 0]
 
 		self.mImage = None
 		self.mRect = None
@@ -22,7 +22,7 @@ class Entity:
 		return self.mCollisionRect
 
 	def Update(self, delta):
-		self.mRect.topleft = self.mPosition
+		self.mRect.topleft = (self.mPosition[0], self.mPosition[1])
 		return
 
 	def OnCollision(self, other):
@@ -30,5 +30,5 @@ class Entity:
 
 	def Draw(self):
 		if (self.mImage):
-			self.mKernel.DisplaySurface.blit(self.mImage, self.mRect)
+			self.mKernel.DisplaySurface().blit(self.mImage, self.mRect)
 		return
