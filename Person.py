@@ -1,13 +1,19 @@
 from Entity import *
+import pygame
 
 class Person(Entity):
 	def __init__(self, kernel, level):
 		Entity.__init__(self, kernel, level)
-		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("Box1.bmp")
+		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("playertest.bmp")
+
 		self.mVelocity =  [0,0]
 		self.mGravity = 1
 		self.mGroundLevel = 0
 		self.mScore = 0
+
+		self.mFrameRect = pygame.Rect(0, 0, 64, 64)
+		self.mFrameWidth = 64
+		self.mAnimationSpeed = 4
 
 	def OnCollision(self, other):	
 		if other.IsA('Collectable'):

@@ -7,8 +7,13 @@ class Entity:
 		self.mPosition = [0, 0]
 
 		self.mImage = None
+		self.mFrameRect = None
 		self.mRect = None
 		self.mCollisionRect = None
+
+		self.mFrameWidth = 0
+		self.mAnimationSpeed = 1
+		self.mAnimationTick = 0
 
 	def Position(self):
 		return self.mPosition
@@ -29,7 +34,17 @@ class Entity:
 		return self.mRect.colliderect(other.Rect())
 
 	def Update(self, delta):
+		self.mAnimationTick += 1
+
 		self.mRect.topleft = (self.mPosition[0], self.mPosition[1])
+
+		if (self.mFrameWidth and self.mAnimationTick > self.mAnimationSpeed):
+			self.mAnimationTick = 0
+			self.mFrameRect.move_ip((self.mFrameWidth, 0))
+
+			if (self.mFrameRect.right > self.mRect.width):
+				self.mFrameRect.left = 0
+
 		return
 
 	def OnCollision(self, other):
@@ -37,5 +52,8 @@ class Entity:
 
 	def Draw(self):
 		if (self.mImage):
-			self.mLevel.DisplaySurface().blit(self.mImage, self.mRect)
+			if (self.mFrameRect):
+				self.mLevel.DisplaySurface().blit(self.mImage, self.mRect, self.mFrameRect)
+			else:
+				self.mLevel.DisplaySurface().blit(self.mImage, self.mRect)
 		return
