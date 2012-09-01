@@ -46,6 +46,10 @@ class Level:
 				file.write(entity.Position()[0])
 				file.write(entity.Position()[1])
 
+	def AddEntity(entity, position):
+		entity.setPosition(position)
+		self.mEntities.append(entity)
+
 	def EntityAt(self, position):
 		for entity in self.mEntities:
 			if entity.Rect().collide_point(position):
