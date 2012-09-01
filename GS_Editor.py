@@ -35,7 +35,8 @@ class GS_Editor(GameState):
 			module = __import__(self.mAvailableEntities[i])
 			_EntityClass = getattr(module, self.mAvailableEntities[i])
 
-			entity = _EntityClass(self.mKernel)
+			# Hacky passing in self.mKernel, but since it has Display surface, it works
+			entity = _EntityClass(self.mKernel, self.mKernel)
 			entity.SetPosition([ 912 - (entity.Rect().width / 2), currentHeight])
 
 			currentHeight += entity.Rect().height + 10
@@ -64,7 +65,7 @@ class GS_Editor(GameState):
 			if (self.mEntityBox.collidepoint(event.pos)):
 				if (self.mSaveLevelRect.collidepoint(event.pos)):
 					self.mLevel.SaveLevel(self.mLevelName)
-					
+
 				for entity in self.mEntitySelects:
 					if (entity.Rect().collidepoint(event.pos)):
 						self.mSelectedEntity = entity
@@ -75,8 +76,13 @@ class GS_Editor(GameState):
 					module = __import__(classname)
 					_Entity = getattr(module, classname)
 
-					newEntity = _Entity(self.mKernel)
-					self.mLevel.AddEntity(newEntity, list(event.pos))
+					newEntity = _Entity(self.mKernel, self.mLevel)
+					self.mLevel.AddEntity(newEntity, self.mLevel.ScreenToLevelCoordinates(event.pos))
+		elif (event.type == KEYDOWN):
+			if (event.key == K_a):
+				self.mLevel.Scroll(-50)
+			elif (event.key == K_d):
+				self.mLevel.Scroll(50)
 
 		return GameState.HandleEvent(self, event)
 

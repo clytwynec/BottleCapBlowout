@@ -2,8 +2,8 @@ from math import cos
 from Entity import *
 
 class BottleCap(Entity):
-	def __init__(self, kernel):
-		Entity.__init__(self, kernel)
+	def __init__(self, kernel, level):
+		Entity.__init__(self, kernel, level)
 
 		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("Bottlecap.bmp")
 		self.mSolid = 1

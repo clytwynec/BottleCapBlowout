@@ -2,8 +2,8 @@ import math
 from Entity import *
 
 class Bee(Entity):
-	def __init__(self, kernel):
-		Entity.__init__(self, kernel)
+	def __init__(self, kernel, level):
+		Entity.__init__(self, kernel, level)
 
 		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("Bee1.bmp")
 		self.mSolid = 1

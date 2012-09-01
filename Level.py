@@ -1,5 +1,7 @@
 import os
+import pygame
 
+from pygame.locals import *
 
 class Level:
 	def __init__(self, kernel):
@@ -9,9 +11,18 @@ class Level:
 		self.mBackgroundImageName = ''
 		self.mLevelLength = 0
 		self.mLevelName = ""
+		self.mLevelSurface = None
+
+		self.mLevelHeight = 768
 
 		self.mBackgroundImage, self.mBackgroundRect = kernel.ImageManager().LoadImage("bg_test.bmp", False)
+
+		self.mCameraX = 0
+
 		return
+
+	def DisplaySurface(self):
+		return self.mLevelSurface
 
 	#############################################
 	# LoadLevel
@@ -37,6 +48,9 @@ class Level:
 				self.mBackgroundImageName = entityList[0]
 				self.mLevelLength = int(entityList[1])
 
+				if (self.mLevelLength == 0):
+					self.mLevelLength = 2046
+
 				for i in range(2, len(entityList)):
 					parts = entityList[i].split()
 
@@ -58,6 +72,10 @@ class Level:
 	# an Update, OnCollision, and __init__ methods
 	##############################################
 	def ProcessEntities(self):
+		# Set the level surface correctly:
+		print self.mLevelLength, self.mLevelHeight
+		self.mLevelSurface = pygame.Surface((self.mLevelLength, self.mLevelHeight))
+
 		# Spin through the loaded entities, eval them, and split them into collidable and other entities
 		if (len(self.mLevelEntities) > 0):
 			for entity in self.mLevelEntities:
@@ -65,7 +83,7 @@ class Level:
 				mod = __import__(entity["name"])
 				EntityClass_ = getattr(mod, entity["name"])
 
-				rawEntity = EntityClass_(self.mKernel)
+				rawEntity = EntityClass_(self.mKernel, self)
 
 				rawEntity.SetPosition(entity["position"])
 
@@ -143,6 +161,16 @@ class Level:
 
 		return
 
+	def ScreenToLevelCoordinates(self, screenCoord):
+		return [ screenCoord[0] + self.mCameraX, screenCoord[1] ]
+
+	def Scroll(self, amount):
+		self.mCameraX += amount
+		if (self.mCameraX < 0):
+			self.mCameraX = 0
+		elif (self.mCameraX > self.mLevelLength):
+			self.mCameraX = self.mLevelLength
+
 	##############################################
 	# Draw
 	#
@@ -150,9 +178,11 @@ class Level:
 	# itself
 	##############################################
 	def Draw(self):
-		self.mKernel.DisplaySurface().blit(self.mBackgroundImage, self.mBackgroundRect)
+		self.mLevelSurface.blit(self.mBackgroundImage, self.mBackgroundRect)
 
 		for entity in self.mEntities:
 			entity.Draw()
+
+		self.mKernel.DisplaySurface().blit(self.mLevelSurface, self.mKernel.DisplaySurface().get_rect(), pygame.Rect(self.mCameraX, 0, 1024, self.mLevelHeight))
 
 		return

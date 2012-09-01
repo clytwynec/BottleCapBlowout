@@ -1,6 +1,7 @@
 class Entity:
-	def __init__(self, kernel):
+	def __init__(self, kernel, level):
 		self.mKernel = kernel
+		self.mLevel = level
 
 		self.mSolid = 0
 		self.mPosition = [0, 0]
@@ -34,5 +35,5 @@ class Entity:
 
 	def Draw(self):
 		if (self.mImage):
-			self.mKernel.DisplaySurface().blit(self.mImage, self.mRect)
+			self.mLevel.DisplaySurface().blit(self.mImage, self.mRect)
 		return
