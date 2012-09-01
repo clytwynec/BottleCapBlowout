@@ -130,8 +130,8 @@ class GS_Editor(GameState):
 			elif (event.key == K_d):
 				self.mLevel.Scroll(16)
 			elif (event.key == K_UP):
-				self.mJumpCount +=1
-				if self.mJumpCount < 2:
+				self.mPerson.mJumpCount +=1
+				if self.mPerson.mJumpCount < 2:
 					self.mPerson.mVelocity[1] -= 15
 			elif (event.key == K_DOWN):
 				self.mPerson.mVelocity[1] -= 15
