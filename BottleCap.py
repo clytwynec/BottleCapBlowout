@@ -20,7 +20,7 @@ class BottleCap(Entity):
 		if (abs(self.mFloatDistance) >= self.mFloatMax):
 			self.mModifier *= -1
 
-		self.mPosition[0] = self.mPosition[1] + self.mFloatDistance
+		self.mPosition[0] = self.mPosition[0] + self.mFloatDistance
 
 		return Entity.Update(self, delta)
 

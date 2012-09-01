@@ -35,7 +35,7 @@ class Level:
 				entityList = levelList.read().splitlines() 
 
 				self.mBackgroundImageName = entityList[0]
-				self.mLevelLength = entityList[1]
+				self.mLevelLength = int(entityList[1])
 
 				for i in range(2, len(entityList)):
 					parts = entityList[i].split()
@@ -82,13 +82,13 @@ class Level:
 		lines = []
 
 		with open(os.path.join("data", "levels", levelname), 'w') as file:
-			file.write(self.mBackgroundImageName)
-			file.write(self.mLevelLength)
+			file.write(self.mBackgroundImageName + "\n")
+			file.write(str(self.mLevelLength) + "\n")
 
 			for entity in self.mEntities:
-				file.write(entity.__class__.__name__)
-				file.write(entity.Position()[0])
-				file.write(entity.Position()[1])
+				file.write(entity.__class__.__name__ + " ")
+				file.write(str(entity.Position()[0]) + " ")
+				file.write(str(entity.Position()[1]) + "\n")
 
 	##############################################
 	# AddEntity

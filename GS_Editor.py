@@ -25,7 +25,7 @@ class GS_Editor(GameState):
 		]
 
 		self.mSaveLevelImage, self.mSaveLevelRect = kernel.ImageManager().LoadImage("saveLevel.bmp", False)
-		self.mSaveLevelRect.topleft = (912 - (self.mSaveLevelRect.width / 2), 700)
+		self.mSaveLevelRect.topleft = (912 - (self.mSaveLevelRect.width / 2), 740)
 
 	def Initialize(self):
 		self.mLevel.LoadLevel(self.mLevelName)
@@ -62,6 +62,9 @@ class GS_Editor(GameState):
 			sys.exit()
 		elif (event.type == MOUSEBUTTONDOWN):
 			if (self.mEntityBox.collidepoint(event.pos)):
+				if (self.mSaveLevelRect.collidepoint(event.pos)):
+					self.mLevel.SaveLevel(self.mLevelName)
+					
 				for entity in self.mEntitySelects:
 					if (entity.Rect().collidepoint(event.pos)):
 						self.mSelectedEntity = entity
