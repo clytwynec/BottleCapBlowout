@@ -14,6 +14,10 @@ class Entity:
 
 	def SetPosition(self, pos):
 		self.mPosition = pos
+		self.mRect.topleft = (self.mPosition[0], self.mPosition[1])
+
+	def IsA(self, classname):
+		return isinstance(self, classname)
 
 	def Rect(self):
 		return self.mRect
