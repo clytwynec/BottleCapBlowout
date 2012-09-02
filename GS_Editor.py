@@ -23,7 +23,9 @@ class GS_Editor(GameState):
 		self.mAvailableEntities = [
 			"Bee",
 			"Box",
-			"BottleCap",
+			"RedCap",
+			"BlueCap",
+			"GoldCap",
 			"Hive"
 		]
 

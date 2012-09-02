@@ -1,24 +1,24 @@
 background.bmp
 4096
 Box 200 600
-BottleCap 564 244
-BottleCap 618 161
-BottleCap 686 85
-BottleCap 840 83
-BottleCap 907 149
-BottleCap 989 226
+BlueCap 564 244
+BlueCap 618 161
+BlueCap 686 85
+RedCap 840 83
+RedCap 907 149
+RedCap 989 226
 Bee 1046 121
-BottleCap 1165 130
+BlueCap 1165 130
 Box 1355 501
 Box 1594 502
 Box 1818 502
 Box 1817 438
 Hive 2195 257
-BottleCap 2090 124
-BottleCap 2286 117
-BottleCap 2426 117
+RedCap 2090 124
+BlueCap 2286 117
+GoldCap 2426 117
 Bee 2602 105
-BottleCap 2742 107
+GoldCap 2742 107
 Bee 2867 102
 Box 2638 503
 Box 2765 503
