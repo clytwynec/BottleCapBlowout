@@ -27,13 +27,10 @@ class GS_MenuBase(GameState):
 		return GameState.Destroy(self)
 
 	def Pause(self):
-		self.mMenuItems = {}
-		self.mHeading = None
 
 		return GameState.Pause(self)
 
 	def Unpause(self):
-		self.Initialize()
 
 		return GameState.Unpause(self)
 
