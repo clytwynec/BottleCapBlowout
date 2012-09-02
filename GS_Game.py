@@ -133,12 +133,12 @@ class GS_Game(GameState):
 				self.mPerson.mResetting = False
 			
 		self.mLevel.Draw()
+		self.mBalloon.Draw()
+
+		self.mHouse.DrawBack()
 
 		self.mCordRect.bottomright = self.mPerson.Rect().bottomleft
 		self.mLevel.DisplaySurface().blit(self.mCordImage, self.mCordRect)
-
-		self.mBalloon.Draw()
-		self.mHouse.DrawBack()
 		self.mPerson.Draw()
 		self.mHouse.Draw()
 
