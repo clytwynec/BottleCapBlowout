@@ -15,7 +15,7 @@ class Balloon(Entity):
 		self.mValue = 0
 		self.mBlown = 0  # 0 = blower off, 1 = blower on
 		self.mGravity = 20 #slope
-		self.mBlowStrength = 5
+		self.mBlowStrength = 20
 		self.mTicker = 0 #adjust gravity to be less than 1 pixel/frame
 		self.mVelocity =  [0, 0]
 

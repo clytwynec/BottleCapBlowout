@@ -40,7 +40,7 @@ class Person(Entity):
 			self.UpdateScore(other.mValue)
 
 			if (other.mSolid):
-				if (self.mVelocity[1] >= 0 and self.mCollisionRect.bottom - other.Rect().top <= 16):
+				if (self.mVelocity[1] >= 0 and self.mCollisionRect.bottom - other.CollisionRect().top <= 16):
 					if (self.mJumpCount > 0):
 						self.mJumpCount = 0
 						self.Run()
@@ -48,6 +48,8 @@ class Person(Entity):
 					self.mVelocity[1] = 0
 					self.mGravity = 0
 					self.mPosition[1] -= self.mCollisionRect.bottom - other.Rect().top - 1
+				elif (self.mCollisionRect.right - other.CollisionRect().left > 0):
+					self.mVelocity[0] = -1 * self.mLevel.mScrollSpeed
 
 		if other.IsA('Balloon'):
 			self.UpdateScore(other.mValue)
@@ -104,7 +106,8 @@ class Person(Entity):
 			self.mVelocity[1] = 0
 
 		#Scrolling
-		self.mPosition[0] += self.mLevel.mScrollSpeed
+		self.mPosition[0] += self.mVelocity[0] + self.mLevel.mScrollSpeed
+		self.mVelocity[0] = 0
 
 		self.mGravity = 1
 
