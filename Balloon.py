@@ -9,10 +9,14 @@ class Balloon(Entity):
 		#self.mCollideSound =
 		self.mValue = 0
 		self.mBlown = 0  # 0 = blower off, 1 = blower on
-		self.mGravity = 2 #slope
-		self.mBlowStrength = 3
+		self.mGravity = 20 #slope
+		self.mBlowStrength = 1
 		self.mTicker = 0 #adjust gravity to be less than 1 pixel/frame
 		self.mVelocity =  [0, 0]
+
+		self.mMaxBob = 50
+		self.mBob = 0
+		self.mBobDirecton = 1
 
 	def OnCollision(self, other):
 		if other.IsA('Collectable'):
@@ -38,25 +42,33 @@ class Balloon(Entity):
 
  	def Update(self, delta):
  		if self.mBlown == 0:
- 			if self.mTicker % 12 == 0:
- 				self.mVelocity[0] = -1*math.floor(self.mGravity)
- 				self.mVelocity[1] = math.floor(self.mGravity)
-				self.mPosition[1] += self.mVelocity[1] 
-				self.mPosition[0] += self.mVelocity[0]
+			self.mVelocity[0] = -1 * float(self.mGravity) / delta
+			self.mPosition[0] += self.mVelocity[0]
 
-				if self.mPosition[1] > self.mGroundLevel:
-					self.mPosition[1] = self.mGroundLevel
-					self.mPosition[0] -= self.mVelocity[0]
+			self.mVelocity[1] = float(self.mGravity) / delta
+			self.mPosition[1] += self.mVelocity[1]
+
+			if self.mPosition[1] > self.mGroundLevel:
+				self.mPosition[1] = self.mGroundLevel
+				self.mPosition[0] -= self.mVelocity[0]
 
  		elif self.mBlown == 1:
- 			 	self.mVelocity[0] = self.mBlowStrength
- 			 	self.mVelocity[1] = -1*self.mBlowStrength
+ 			 	self.mVelocity[0] += float(self.mBlowStrength) / delta
+ 			 	self.mVelocity[1] += -1.0 * float(self.mBlowStrength) / delta
+
 				self.mPosition[1] += self.mVelocity[1] 
 				self.mPosition[0] += self.mVelocity[0]
 
 				if self.mPosition[1] < 0:
 					self.mPosition[1] = 0
-					self.mPosition[0] -= self.mVelocity[0]  
+					self.mPosition[0] -= self.mVelocity[0]
+
+
+		oldBob = self.mBob
+		self.mBob = self.mMaxBob * math.sin(math.radians(self.mTicker % 360))
+		self.mDelta = self.mBob - oldBob
+
+		self.mPosition[0] += self.mDelta
 
  		self.mTicker += 1
 
