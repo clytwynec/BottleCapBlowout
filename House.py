@@ -10,11 +10,13 @@ class House(Entity):
 		self.mCollisionRect = pygame.Rect(0, 0, 64, 64)
 
 	def Update(self, delta):
-		self.mCollisionRect.topleft = (self.mPosition[0] + 370, self.mPosition[1] + 400)
-
-		print self.mCollisionRect
+		self.SyncCollisionRect()
 
 		return Entity.Update(self, delta)
+
+	def SyncCollisionRect(self):
+		self.mCollisionRect.topleft = (self.mPosition[0] + 380, self.mPosition[1] + 400)
+
 
 	def DrawBack(self):
 		self.mLevel.DisplaySurface().blit(self.mBackImage, self.mRect)

@@ -48,10 +48,11 @@ class GS_Game(GameState):
 		self.mPerson.SetPosition([128, self.mGroundLevel])
 		self.mPerson.mScreenOffset = 128
 		self.mPerson.SetGroundLevel(self.mGroundLevel)
+		self.mPerson.SyncCollisionRect()
 
 		self.mHouse = House(self.mKernel, self.mLevel)
-		self.mHouse.SetPosition([ 512, self.mGroundLevel - 480 ])
-		print self.mHouse.mPosition
+		self.mHouse.SetPosition([ self.mLevel.mLevelLength - 512, self.mGroundLevel - 480 ])
+		self.mHouse.SyncCollisionRect()
 
 		self.SpawnBalloon()
 
@@ -97,8 +98,11 @@ class GS_Game(GameState):
 		return GameState.HandleEvent(self, event)
 
 	def Update(self, delta):
-		if self.mHouse.CheckCollision(self.mPerson):
+		if self.mPerson.CheckCollision(self.mHouse):
 			self.mLevelComplete = True
+
+		if self.mLevel.mCameraX > (self.mLevel.mLevelLength - 800 * 2):
+			self.mBalloon.mBlown = 0
 
 		if not self.mLevelComplete and self.mPaused == 0:
 			self.mLevel.Scroll(self.mScrollSpeed)
@@ -106,7 +110,6 @@ class GS_Game(GameState):
 
 			self.mPerson.Update(delta)
 			self.mBalloon.Update(delta)
-			self.mHouse.Update(delta)
 
 			self.mLevel.CheckCollisions(self.mPerson)
 			self.mLevel.CheckCollisions(self.mBalloon)
@@ -131,11 +134,8 @@ class GS_Game(GameState):
 
 		self.mHouse.DrawBack()
 		self.mPerson.Draw()
-		self.mBalloon.Draw()
 		self.mHouse.Draw()
-
-		pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.BLUE, self.mHouse.Rect(), 2)
-		pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.RED, self.mHouse.mCollisionRect, 2)
+		self.mBalloon.Draw()
 
 		self.mLevel.Blit()
 

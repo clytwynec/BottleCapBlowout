@@ -136,12 +136,15 @@ class Balloon(Entity):
 
 		self.Scrolling(delta)
 
+		self.SyncCollisionRect()
+
  		self.mTicker += 1
 
+		Entity.Update(self, delta)  
+
+	def SyncCollisionRect(self):
 		self.mBalloonRect.topleft = self.mRect.topleft
 		self.mBucketRect.bottomleft = self.mRect.bottomleft
-
-		Entity.Update(self, delta)  
 
 	def Scrolling(self, delta):
 		self.mPosition[0] += self.mLevel.mScrollSpeed

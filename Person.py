@@ -100,6 +100,11 @@ class Person(Entity):
 		self.mFrameWidth = 128
 		self.mFrameRect = pygame.Rect(0, 0, 128, 128)
 
+	def SyncCollisionRect(self):
+		self.mCollisionRect.left = self.mPosition[0] + 10
+		self.mCollisionRect.bottom = self.mPosition[1] + self.mRect.height - 10
+		self.mCollisionRect.left += 10
+
 	def Update(self, delta):
 		if (not self.mStopped and self.mPosition[0] < self.mScreenOffset + self.mLevel.mCameraX):
 			distDelta = min(self.mScreenOffset + self.mLevel.mCameraX - self.mPosition[0], 2)
@@ -111,7 +116,6 @@ class Person(Entity):
 			self.mDead = True
 
 		if (not self.mDead):
-
 			self.mVelocity[1] += self.mGravity 
 			self.mPosition[1] += self.mVelocity[1] 
 
@@ -132,9 +136,7 @@ class Person(Entity):
 		self.mGravity = 1
 		self.mStopped = False
 
-		self.mCollisionRect.left = self.mPosition[0] + 10
-		self.mCollisionRect.bottom = self.mPosition[1] + self.mRect.height - 10
-		self.mCollisionRect.left += 10
+		self.SyncCollisionRect()
 		
 		Entity.Update(self, delta)  
 
