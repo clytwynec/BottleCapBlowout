@@ -15,7 +15,7 @@ class Balloon(Entity):
 		self.mValue = 0
 		self.mBlown = 0  # 0 = blower off, 1 = blower on
 		self.mGravity = 20 #slope
-		self.mBlowStrength = 1
+		self.mBlowStrength = 4
 		self.mTicker = 0 #adjust gravity to be less than 1 pixel/frame
 		self.mVelocity =  [0, 0]
 
@@ -59,11 +59,13 @@ class Balloon(Entity):
  	def UpdateBasket(self, capVal):
  		self.mValue += capVal 
  		self.mGravity += 5
+ 		self.mBlowStrength -= .25
  		return
 
  	def EmptyBasket(self):
  		self.mGravity -= 0.5 * self.mValue
  		self.mValue = 0
+ 		self.mBlowStrength = 20
 
 
  	def Update(self, delta):
