@@ -28,14 +28,20 @@ class Entity:
 		_Classname = getattr(module, classname)
 		return isinstance(self, _Classname)
 
+	def CollisionRect(self):
+		if (self.mCollisionRect): 
+			return self.mCollisionRect
+
+		return self.mRect
+
 	def Rect(self):
 		return self.mRect
 
 	def CheckCollision(self, other):
 		if (self.mCollisionRect):
-			return self.mCollisionRect.colliderect(other.Rect())
+			return self.mCollisionRect.colliderect(other.CollisionRect())
 			
-		return self.mRect.colliderect(other.Rect())
+		return self.mRect.colliderect(other.CollisionRect())
 
 	def Update(self, delta):
 		self.mAnimationTick += 1

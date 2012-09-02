@@ -88,33 +88,33 @@ class GS_Game(GameState):
 			self.mLevel.Scroll(self.mScrollSpeed)
 			self.mLevel.Update(delta)
 
+			self.mPerson.Update(delta)
+			self.mBalloon.Update(delta)
+
 			self.mLevel.CheckCollisions(self.mPerson)
 			self.mLevel.CheckCollisions(self.mBalloon)
 
 			if (self.mPerson.CheckCollision(self.mBalloon) and self.mBalloon.CheckCollision(self.mPerson)):
 				self.mPerson.OnCollision(self.mBalloon)
 				self.mBalloon.OnCollision(self.mPerson)
-
-			self.mPerson.Update(delta)
-			self.mBalloon.Update(delta)
-
 					
 			if (self.mBalloon.mPopped and self.mBalloon.mPosition[0] < self.mLevel.mCameraX and self.mLives > 0):
 				self.SpawnBalloon()
 			
 		self.mLevel.Draw()
 	
-		for entity in self.mLevel.mEntities:
-			pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.BLUE, entity.Rect(), 2)
+		# for entity in self.mLevel.mEntities:
+		# 	pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.BLUE, entity.Rect(), 2)
 
-			if (entity.mCollisionRect):
-				pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.RED, entity.mCollisionRect, 2)
+		# 	if (entity.mCollisionRect):
+		# 		pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.RED, entity.mCollisionRect, 2)
 
 		self.mCordRect.bottomright = self.mPerson.Rect().bottomleft
 		self.mLevel.DisplaySurface().blit(self.mCordImage, self.mCordRect)
 
 		self.mPerson.Draw()
-		pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.RED, self.mPerson.mCollisionRect, 2)
+		#pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.BLUE, self.mPerson.Rect(), 2)
+		#pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.RED, self.mPerson.mCollisionRect, 2)
 		self.mBalloon.Draw()
 
 		self.mLevel.Blit()
