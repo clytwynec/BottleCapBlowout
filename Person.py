@@ -4,7 +4,7 @@ import pygame
 class Person(Entity):
 	def __init__(self, kernel, level):
 		Entity.__init__(self, kernel, level)
-		self.mRunImage, self.mRunRect = self.mKernel.ImageManager().LoadImage("player_run128.bmp")
+		self.mRunImage, self.mRunRect = self.mKernel.ImageManager().LoadImage("player_run.bmp")
 		self.mDuckImage, self.mDuckRect = self.mKernel.ImageManager().LoadImage("player_duck.bmp")
 		self.mJumpImage1, self.mJumpRect1 = self.mKernel.ImageManager().LoadImage("player_jump1.bmp")
 		self.mJumpImage2, self.mJumpRect2 = self.mKernel.ImageManager().LoadImage("player_jump2.bmp")

@@ -28,7 +28,7 @@ class Level:
 		self.mBackgroundY = []
 
 
-		for layer in range(3):
+		for layer in range(0, 4):
 			img, rect = kernel.ImageManager().LoadImage("bg_" + str(layer) + ".bmp")
 			self.mBackgroundImages.append(img)
 			self.mBackgroundX.append(0)
@@ -36,6 +36,7 @@ class Level:
 
 		self.mBackgroundY[0] -= 25
 		self.mBackgroundY[2] -= 25
+		self.mBackgroundY[3] = 0
 
 		bgimg, bgrect = kernel.ImageManager().LoadImage("bg_test.bmp")
 		self.mBackgroundImages.append(bgimg)

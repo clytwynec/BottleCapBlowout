@@ -6,7 +6,7 @@ class Balloon(Entity):
 
 	def __init__(self, kernel, level):
 		Entity.__init__(self, kernel, level)
-		self.mUnpoppedImage, self.mRect = self.mKernel.ImageManager().LoadImage("Balloon1.bmp")
+		self.mUnpoppedImage, self.mRect = self.mKernel.ImageManager().LoadImage("balloon.bmp")
 		self.mPoppedImage, poppedRect = self.mKernel.ImageManager().LoadImage("balloon_popped.bmp")
 
 		self.mImage = self.mUnpoppedImage
@@ -24,6 +24,10 @@ class Balloon(Entity):
 
 		self.mBalloonRect.topleft = self.mRect.topleft
 		self.mBucketRect.bottomleft = self.mRect.bottomleft
+
+		self.mFrameWidth = 32
+		self.mFrameRect = pygame.Rect(0, 0, 32, 128)
+		self.mAnimationSpeed = 20
 
 		self.mPopped = False
 

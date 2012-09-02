@@ -103,18 +103,18 @@ class GS_Game(GameState):
 			
 		self.mLevel.Draw()
 	
-		for entity in self.mLevel.mEntities:
-			pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.BLUE, entity.Rect(), 2)
+		# for entity in self.mLevel.mEntities:
+		# 	pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.BLUE, entity.Rect(), 2)
 
-			if (entity.mCollisionRect):
-				pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.RED, entity.mCollisionRect, 2)
+		# 	if (entity.mCollisionRect):
+		# 		pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.RED, entity.mCollisionRect, 2)
 
 		self.mCordRect.bottomright = self.mPerson.Rect().bottomleft
 		self.mLevel.DisplaySurface().blit(self.mCordImage, self.mCordRect)
 
 		self.mPerson.Draw()
-		pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.BLUE, self.mPerson.Rect(), 2)
-		pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.RED, self.mPerson.mCollisionRect, 2)
+		#pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.BLUE, self.mPerson.Rect(), 2)
+		#pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.RED, self.mPerson.mCollisionRect, 2)
 		self.mBalloon.Draw()
 
 		self.mLevel.Blit()
