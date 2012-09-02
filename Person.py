@@ -20,6 +20,7 @@ class Person(Entity):
 		self.mGroundLevel = 0
 		self.mScore = 0
 		self.mJumpCount = 0
+		self.mPause = 0
 
 		self.mFrameRect = pygame.Rect(0, 0, 128, 128)
 		self.mFrameWidth = 128
@@ -28,6 +29,9 @@ class Person(Entity):
 	def OnCollision(self, other):
 		if other.IsA('Collectable'):
 			self.UpdateScore(other.mValue)
+		elif other.IsA('Obstacle'):
+			self.UpdateScore(other.mValue)
+
 
 		if other.IsA('Obstacle'):
 			self.UpdateScore(other.mValue)
@@ -98,12 +102,16 @@ class Person(Entity):
 		#Scrolling
 		self.mPosition[0] += self.mLevel.mScrollSpeed
 
+
 		self.mGravity = 1
+
+
 
 		self.mCollisionRect.topleft = self.mPosition
 		self.mCollisionRect.top += 8
 		self.mCollisionRect.left += 10
 		Entity.Update(self, delta)  
+
 
 	
 

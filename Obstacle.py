@@ -10,4 +10,5 @@ class Obstacle(Entity):
 			return Entity.CheckCollision(self, other)
 
 	def OnCollision(self, other):
+		
 		return

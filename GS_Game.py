@@ -22,6 +22,8 @@ class GS_Game(GameState):
 		self.mScrollSpeed = 2
 		self.mLives = 3
 
+		self.mPaused = 0
+
 	def Initialize(self):
 		self.mLevel.LoadLevel(self.mLevelName)
 		self.mLevel.mScrollSpeed = self.mScrollSpeed
@@ -65,6 +67,10 @@ class GS_Game(GameState):
 				self.mPerson.Duck()
 			elif (event.key == K_SPACE):
 				self.mBalloon.mBlown = 1
+			elif (event.key == K_p):
+				self.mPaused = (self.mPaused + 1) % 2
+			elif (event.key == K_ESCAPE):	
+				self.mGameStateManager.SwitchState('MainMenu')
 
 		elif(event.type == KEYUP):
 			if (event.key == K_SPACE):
@@ -75,21 +81,26 @@ class GS_Game(GameState):
 		return GameState.HandleEvent(self, event)
 
 	def Update(self, delta):
-		self.mLevel.Scroll(self.mScrollSpeed)
-		self.mLevel.Update(delta)
+		if self.mPaused == 0:
+			self.mLevel.Scroll(self.mScrollSpeed)
+			self.mLevel.Update(delta)
 
-		self.mLevel.CheckCollisions(self.mPerson)
-		self.mLevel.CheckCollisions(self.mBalloon)
+			self.mLevel.CheckCollisions(self.mPerson)
+			self.mLevel.CheckCollisions(self.mBalloon)
 
-		if (self.mPerson.CheckCollision(self.mBalloon) and self.mBalloon.CheckCollision(self.mPerson)):
-			self.mPerson.OnCollision(self.mBalloon)
-			self.mBalloon.OnCollision(self.mPerson)
+			if (self.mPerson.CheckCollision(self.mBalloon) and self.mBalloon.CheckCollision(self.mPerson)):
+				self.mPerson.OnCollision(self.mBalloon)
+				self.mBalloon.OnCollision(self.mPerson)
 
-		self.mPerson.Update(delta)
-		self.mBalloon.Update(delta)
+			self.mPerson.Update(delta)
+			self.mBalloon.Update(delta)
 
+					
+			if (self.mBalloon.mPopped and self.mBalloon.mPosition[0] < self.mLevel.mCameraX and self.mLives > 0):
+				self.SpawnBalloon()
+			
 		self.mLevel.Draw()
-
+	
 		for entity in self.mLevel.mEntities:
 			pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.BLUE, entity.Rect(), 2)
 
@@ -105,8 +116,6 @@ class GS_Game(GameState):
 
 		self.mLevel.Blit()
 
-		if (self.mBalloon.mPopped and self.mBalloon.mPosition[0] < self.mLevel.mCameraX and self.mLives > 0):
-			self.SpawnBalloon()
 
 		return GameState.Update(self, delta)
 
