@@ -12,8 +12,8 @@ class GS_Game(GameState):
 	def __init__(self, kernel, gsm):
 		GameState.__init__(self, "Game", kernel, gsm)
 
-		self.mLevelName = "Level1.lvl"
-		self.mLevel = Level(kernel, 800)
+		self.mLevelName = ""
+		self.mLevel = None
 
 		self.mGroundLevel = 570
 
@@ -25,6 +25,9 @@ class GS_Game(GameState):
 		self.mPaused = 0
 
 	def Initialize(self):
+		self.mLevelName = "Level1.lvl"
+		self.mLevel = Level(self.mKernel, 800)
+
 		self.mLevel.LoadLevel(self.mLevelName)
 		self.mLevel.mScrollSpeed = self.mScrollSpeed
 
