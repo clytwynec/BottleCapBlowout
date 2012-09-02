@@ -84,16 +84,13 @@ class GS_Game(GameState):
 		self.mPerson.Draw()
 		self.mBalloon.Draw()
 
+		self.mLevel.Blit()
+
 		return GameState.Update(self, delta)
 
 	def SaveScore(self):
 		if self.mLevelName in self.mHighScores:
 			if self.mPerson.mScore > self.mHighScores[self.mLevelName]:
 				self.mHighScores[self.mLevelName] = self.mPerson.mScore
-		elif:
+		else:
 			self.mHighScores.append[self.mLevelName : self.mPerson.mScore]
-
-		self.mLevel.Blit()
-
-		return GameState.Update(self, delta)
-		
