@@ -57,7 +57,7 @@ class Person(Entity):
 
 	def UpdateScore(self, pointsVal):
 		self.mScore += pointsVal
-
+		print "The Score is" + str(self.mScore)
 		return self.mScore
 
 	def Jump(self):

@@ -76,7 +76,7 @@ class Balloon(Entity):
 				self.mPosition[1] += self.mVelocity[1]
 
 				if self.mPosition[1] > self.mGroundLevel - 120:
-					self.mPosition[1] = self.mGroundLevel - 120
+				 	self.mPosition[1] = self.mGroundLevel - 120
 					self.mPosition[0] -= self.mVelocity[0]
 
 	 		elif self.mBlown == 1:
@@ -85,18 +85,23 @@ class Balloon(Entity):
 
 				self.mPosition[1] += self.mVelocity[1] 
 				self.mPosition[0] += self.mVelocity[0]
+			
+				if self.mPosition[1] > self.mGroundLevel - 120:
+					self.mPosition[1] = self.mGroundLevel - 120
+					self.mPosition[0] -= self.mVelocity[0]
 
 				if self.mPosition[1] < 0:
 					self.mPosition[1] = 0
 					self.mPosition[0] -= self.mVelocity[0]
 		else:
 			print "Popfall"
+			self.mVelocity =[-5,1]
 			self.mVelocity[1] += float(self.mGravity) / delta
-			self.mPosition[1] += self.mVelocity[0]
+			self.mPosition[1] += self.mVelocity[1]
 
-			if self.mPosition[1] > self.mGroundLevel - 60:
-					self.mPosition[1] = self.mGroundLevel - 60
-					self.mPosition[0] -= self.mVelocity[0]
+			if self.mPosition[1] > self.mGroundLevel -43:
+					self.mPosition[1] = self.mGroundLevel -43
+					self.mPosition[0] += self.mVelocity[0]
 
 
 		self.Scrolling(delta)
