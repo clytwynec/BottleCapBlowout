@@ -4,15 +4,11 @@ from Collectable import *
 class BottleCap(Collectable):
 	def __init__(self, kernel, level):
 		Collectable.__init__(self, kernel, level)
-
-		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("Bottlecap.bmp")
 		self.mCollideSound = self.mKernel.SoundManager().LoadSound("ding.wav")
-		
 		self.mSolid = 1
 		self.mFloatMax = 0
 		self.mFloatDistance = 0
 		self.mModifier = 0
-		self.mValue = 5
 
 	def Update(self, delta):
 		self.mFloatDistance += (self.mModifier)
