@@ -5,6 +5,8 @@ class GS_MainMenu(GS_MenuBase):
 	def __init__(self, kernel, gsm):
 		GS_MenuBase.__init__(self, "MainMenu", kernel, gsm)
 
+		kernel.ImageManager().LoadImage("resume.bmp")
+
 	def Initialize(self):
 		self.mLevel = Level(self.mKernel, 800)
 		self.mLevel.LoadLevel("MainMenu.lvl")
