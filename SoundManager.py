@@ -10,8 +10,8 @@ class SoundManager:
 
 	def LoadSound(self, filename):
 		if (filename in self.mLoadedSounds):
-			return self.mLoadedSounds[filename], self.mLoadedSounds[filename].get_rect()
+			return self.mLoadedSounds[filename]
 		else:
-			image = pygame.mixer.Sound(os.path.join("data", "sounds", filename))
+			sound = pygame.mixer.Sound(os.path.join("data", "sounds", filename))
 			self.mLoadedSounds[filename] = sound
-			return sounds
+			return sound

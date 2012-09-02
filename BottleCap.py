@@ -6,17 +6,13 @@ class BottleCap(Collectable):
 		Collectable.__init__(self, kernel, level)
 
 		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("Bottlecap.bmp")
-		#self.mCollideSound =
+		self.mCollideSound = self.mKernel.SoundManager().LoadSound("ding.wav")
+		
 		self.mSolid = 1
 		self.mFloatMax = 0
 		self.mFloatDistance = 0
 		self.mModifier = 0
 		self.mValue = 5
-
-
-	#def OnCollision(self, other):
-		#print "Ding!"
-		## Audio and Animations here
 
 	def Update(self, delta):
 		self.mFloatDistance += (self.mModifier)

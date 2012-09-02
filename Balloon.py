@@ -15,7 +15,7 @@ class Balloon(Entity):
 		self.mValue = 0
 		self.mBlown = 0  # 0 = blower off, 1 = blower on
 		self.mGravity = 20 #slope
-		self.mBlowStrength = 1
+		self.mBlowStrength = 5
 		self.mTicker = 0 #adjust gravity to be less than 1 pixel/frame
 		self.mVelocity =  [0, 0]
 
@@ -30,6 +30,16 @@ class Balloon(Entity):
 		self.mAnimationSpeed = 20
 
 		self.mPopped = False
+
+		self.mBlowStartSound = self.mKernel.SoundManager().LoadSound("hairdryer_on.wav")
+		self.mBlowEndSound = self.mKernel.SoundManager().LoadSound("hairdryer_off.wav")
+		self.mBlowSound = self.mKernel.SoundManager().LoadSound("hairdryer.wav")
+
+		self.mBlowStartSound.set_volume(0.05)
+		self.mBlowEndSound.set_volume(0.05)
+		self.mBlowSound.set_volume(0.05)
+
+		self.mBlowChannel = None
 
 
 	def CheckCollision(self, other):
@@ -73,6 +83,12 @@ class Balloon(Entity):
  	def Update(self, delta):
  		if not self.mPopped:
 	 		if self.mBlown == 0:
+
+	 			if (self.mBlowChannel and self.mBlowChannel.get_sound()):
+	 				self.mBlowChannel.stop()
+	 				self.mBlowChannel = None
+	 				self.mBlowEndSound.play()
+
 				self.mVelocity[0] = -1 * float(self.mGravity) / delta
 				self.mPosition[0] += self.mVelocity[0]
 
@@ -82,8 +98,15 @@ class Balloon(Entity):
 				if self.mPosition[1] > self.mGroundLevel - 120:
 				 	self.mPosition[1] = self.mGroundLevel - 120
 					self.mPosition[0] -= self.mVelocity[0]
+					self.mVelocity = [0, 0]
 
 	 		elif self.mBlown == 1:
+	 			if (not self.mBlowChannel):
+	 				self.mBlowChannel = self.mBlowStartSound.play()
+	 				self.mBlowChannel.queue(self.mBlowSound)
+	 			elif (not self.mBlowChannel.get_queue()):
+	 				self.mBlowChannel.queue(self.mBlowSound)
+
 				self.mVelocity[0] += float(self.mBlowStrength) / delta
 				self.mVelocity[1] += -1.0 * float(self.mBlowStrength) / delta
 
@@ -93,6 +116,7 @@ class Balloon(Entity):
 				if self.mPosition[1] > self.mGroundLevel - 120:
 					self.mPosition[1] = self.mGroundLevel - 120
 					self.mPosition[0] -= self.mVelocity[0]
+					self.mVelocity = [0, 0]
 
 				if self.mPosition[1] < 0:
 					self.mPosition[1] = 0
@@ -103,8 +127,8 @@ class Balloon(Entity):
 			self.mPosition[1] += self.mVelocity[1]
 			self.mPosition[0] -= self.mVelocity[1]
 
-			if self.mPosition[1] > self.mGroundLevel -43:
-					self.mPosition[1] = self.mGroundLevel -43
+			if self.mPosition[1] > self.mGroundLevel - 43:
+					self.mPosition[1] = self.mGroundLevel - 43
 					self.mPosition[0] += self.mVelocity[0]
 
 
