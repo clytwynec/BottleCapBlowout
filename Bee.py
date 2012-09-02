@@ -12,6 +12,7 @@ class Bee(Obstacle):
 		self.mFloatDistance = random.randrange(-1 * self.mFloatMax, self.mFloatMax)
 		self.mModifier = 1
 		self.mValue = 0
+		self.mDeadly = 1
 
 	def OnCollision(self, other):
 		##Audio and Animations here 

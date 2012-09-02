@@ -76,7 +76,7 @@ class Person(Entity):
 		return self.mScore
 
 	def Jump(self):
-		if self.mJumpCount < 2:
+		if self.mDead == 0 and self.mJumpCount < 2:
 			self.mJumpCount +=1
 			self.mVelocity[1] = -15
 
@@ -109,12 +109,14 @@ class Person(Entity):
 		self.mCollisionRect.left += 10
 
 	def Reset(self):
-		self.SetPosition([ self.mPosition[0] - 100, self.mPosition[1] ])
-		self.mLevel.mCameraX = self.mPosition[0] - self.mScreenOffset
+		self.SetPosition([ max(0, self.mPosition[0] - 100), self.mPosition[1] ])
+		self.mLevel.mCameraX = max(0, self.mPosition[0] - self.mScreenOffset)
 		self.mImage = self.mDeadImage
 		self.mFrameWidth = 128
 		self.mFrameRect = pygame.Rect(0, 0, 128, 128)
+		self.mVelocity[1] = 0
 		self.mResetting = True
+		self.mJumpCount = 0
 
 	def Update(self, delta):
 		wasDead = self.mDead > 0

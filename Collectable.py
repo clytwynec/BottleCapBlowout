@@ -13,6 +13,7 @@ class Collectable(Entity):
 	def OnCollision(self, other):
 		if not other.IsA('Obstacle'):
 			if self.mCollideSound:
-				self.mCollideSound.play()
+				if self.mSoundState == 1:
+					self.mCollideSound.play()
 			self.mLevel.RemoveEntity(self)
 		return
