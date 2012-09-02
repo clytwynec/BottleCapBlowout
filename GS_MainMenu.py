@@ -28,6 +28,15 @@ class GS_MainMenu(GS_MenuBase):
 		self.mMenuImages["Exit"], self.mMenuRects["Exit"] = self.mKernel.ImageManager().LoadImage("exit.bmp")
 		self.mMenuRects["Exit"].topleft = (400 - self.mMenuRects["Exit"].width / 2, 450)
 
+	def HandleEvent(self, event):
+		if (event.type == MOUSEBUTTONDOWN):
+			if (self.mMenuRects["NewGame"].collidepoint(event.pos)):
+				self.mGameStateManager.GetState("Game").Destroy()
+				self.mGameStateManager.SwitchState("Game")
+				return
+
+		return GS_MenuBase.HandleEvent(self, event)
+
 	def Update(self, delta):
 		#self.mLevel.Scroll(1)
 		self.mLevel.Draw()
