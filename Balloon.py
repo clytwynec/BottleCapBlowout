@@ -14,8 +14,8 @@ class Balloon(Entity):
 		#self.mCollideSound =
 		self.mValue = 0
 		self.mBlown = 0  # 0 = blower off, 1 = blower on
-		self.mGravity = 20 #slope
-		self.mBlowStrength = 4
+		self.mGravity = 15 #slope
+		self.mBlowStrength = 3
 		self.mTicker = 0 #adjust gravity to be less than 1 pixel/frame
 		self.mVelocity =  [0, 0]
 
