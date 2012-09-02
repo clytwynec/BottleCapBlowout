@@ -173,7 +173,7 @@ class Level:
 		collisions = []
 		for second in self.mEntities:
 			if (first != second):
-				if (first.CheckCollision(second)):
+				if (first.CheckCollision(second) and second.CheckCollision(first)):
 					collisions.append((first, second))
 
 		for collision in collisions:
@@ -189,8 +189,8 @@ class Level:
 	##############################################
 	def Update(self, delta):
 		for entity in self.mEntities:
-			entity.Update(delta)
-			self.CheckCollisions(entity)
+		 	entity.Update(delta)
+		# 	self.CheckCollisions(entity)
 
 		return
 
