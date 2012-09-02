@@ -24,10 +24,14 @@ class GS_Editor(GameState):
 			"Bee",
 			"Box",
 			"BottleCap",
+			"Hive"
 		]
 
 		self.mSaveLevelImage, self.mSaveLevelRect = kernel.ImageManager().LoadImage("saveLevel.bmp", False)
 		self.mSaveLevelRect.topleft = (725  - (self.mSaveLevelRect.width / 2), 570)
+		
+		self.mMainMenuImage, self.mMainMenuRect = kernel.ImageManager().LoadImage("mainmenu_ed.bmp", False)
+		self.mMainMenuRect.topleft = (725  - (self.mSaveLevelRect.width / 2), 540)
 
 		self.mGroundLevel = 570
 
@@ -68,22 +72,28 @@ class GS_Editor(GameState):
 			sys.exit()
 		elif (event.type == MOUSEBUTTONDOWN):
 			if (self.mEntityBox.collidepoint(event.pos)):
+
 				if (self.mSaveLevelRect.collidepoint(event.pos)):
 					self.mLevel.SaveLevel(self.mLevelName)
 
-				for entity in self.mEntitySelects:
-					if (entity.Rect().collidepoint(event.pos)):
-						self.mSelectedEntity = entity
+				elif (self.mMainMenuRect.collidepoint(event.pos)):
+					self.mGameStateManager.SwitchState("MainMenu")
 
-						classname = self.mSelectedEntity.__class__.__name__
-						module = __import__(classname)
-						_Entity = getattr(module, classname)
+				else:
+					for entity in self.mEntitySelects:
+						if (entity.Rect().collidepoint(event.pos)):
+							self.mSelectedEntity = entity
 
-						self.mGhostEntity = _Entity(self.mKernel, self.mKernel)
-						return
+							classname = self.mSelectedEntity.__class__.__name__
+							module = __import__(classname)
+							_Entity = getattr(module, classname)
 
-				self.mGhostEntity = None
-				self.mSelectedEntity = None
+							self.mGhostEntity = _Entity(self.mKernel, self.mKernel)
+							self.mGhostEntity.SetPosition(list(event.pos))
+							return
+
+					self.mGhostEntity = None
+					self.mSelectedEntity = None
 			else:
 				if (self.mSelectedEntity):
 					classname = self.mSelectedEntity.__class__.__name__
@@ -94,7 +104,7 @@ class GS_Editor(GameState):
 					self.mLevel.AddEntity(newEntity, self.mLevel.ScreenToLevelCoordinates(event.pos))
 
 				elif (self.mCurrentEntity):
-					self.mCurrentEntity.SetPosition(list(event.pos))
+					self.mCurrentEntity.SetPosition(list(self.mLevel.ScreenToLevelCoordinates(event.pos)))
 					self.mCurrentEntity = None
 
 				else:
@@ -103,7 +113,8 @@ class GS_Editor(GameState):
 
 		elif (event.type == MOUSEMOTION):
 			if (self.mCurrentEntity and event.pos[0] < 576 and event.pos[0] > 0):
-				self.mCurrentEntity.SetPosition(list(event.pos))
+				self.mCurrentEntity.SetPosition(list(self.mLevel.ScreenToLevelCoordinates(event.pos)))
+
 			elif (self.mSelectedEntity and event.pos[0] < 576 and event.pos[0] > 0):
 				if (not self.mGhostEntity):
 					classname = self.mSelectedEntity.__class__.__name__
@@ -119,6 +130,9 @@ class GS_Editor(GameState):
 				self.mLevel.Scroll(-16)
 			elif (event.key == K_d):
 				self.mLevel.Scroll(16)
+			elif (event.key == K_BACKSPACE and self.mCurrentEntity):
+				self.mLevel.RemoveEntity(self.mCurrentEntity)
+				self.mCurrentEntity = None
 
 		return GameState.HandleEvent(self, event)
 
@@ -127,7 +141,15 @@ class GS_Editor(GameState):
 		#self.mLevel.Update(delta)
 
 		self.mLevel.Draw()
+
+		if (self.mCurrentEntity):
+			pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.GREEN, self.mCurrentEntity.Rect(), 2)
+
 		self.mLevel.Blit()
+
+		if (self.mGhostEntity):
+			self.mGhostEntity.Draw()
+			pygame.draw.rect(self.mKernel.DisplaySurface(), Colors.RED, self.mGhostEntity.Rect(), 2)
 
 		pygame.draw.line(self.mKernel.DisplaySurface(), Colors.BLUE, (0, self.mGroundLevel), (800, self.mGroundLevel), 4)
 
@@ -136,17 +158,12 @@ class GS_Editor(GameState):
 		for entity in self.mEntitySelects:
 			entity.Draw()
 
+
 		if (self.mSelectedEntity):
+			selectedRect = self.mSelectedEntity.Rect()
 			pygame.draw.rect(self.mKernel.DisplaySurface(), Colors.RED, self.mSelectedEntity.Rect(), 2)
 
-		if (self.mCurrentEntity):
-			pygame.draw.rect(self.mKernel.DisplaySurface(), Colors.GREEN, self.mCurrentEntity.Rect(), 2)
-
-		if (self.mGhostEntity):
-			self.mGhostEntity.Draw()
-			pygame.draw.rect(self.mKernel.DisplaySurface(), Colors.RED, self.mGhostEntity.Rect(), 2)
-
-
+		self.mKernel.DisplaySurface().blit(self.mMainMenuImage, self.mMainMenuRect)
 		self.mKernel.DisplaySurface().blit(self.mSaveLevelImage, self.mSaveLevelRect)
 
 		return GameState.Update(self, delta)

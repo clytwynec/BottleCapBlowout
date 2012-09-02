@@ -19,6 +19,8 @@ class GS_Game(GameState):
 
 		self.mHighScores = {}
 
+		self.mLives = 3
+
 	def Initialize(self):
 		self.mLevel.LoadLevel(self.mLevelName)
 
@@ -29,11 +31,14 @@ class GS_Game(GameState):
 		self.mPerson.SetPosition([128, self.mGroundLevel])
 		self.mPerson.SetGroundLevel(self.mGroundLevel)
 
-		self.mBalloon = Balloon(self.mKernel, self.mLevel)
-		self.mBalloon.SetPosition([ 128 + 128, self.mGroundLevel - self.mBalloon.Rect().height - 128 ])
-		self.mBalloon.mGroundLevel = 500
+		self.SpawnBalloon()
 
 		return GameState.Initialize(self)
+
+	def SpawnBalloon(self):
+		self.mBalloon = Balloon(self.mKernel, self.mLevel)
+		self.mBalloon.SetPosition([ self.mPerson.Rect().right, self.mGroundLevel - self.mBalloon.Rect().height - 128 ])
+		self.mBalloon.mGroundLevel = 500
 
 	def Destroy(self):
 
@@ -72,19 +77,31 @@ class GS_Game(GameState):
 		self.mLevel.Update(delta)
 
 		self.mLevel.CheckCollisions(self.mPerson)
+		self.mLevel.CheckCollisions(self.mBalloon)
+
+		if (self.mPerson.CheckCollision(self.mBalloon) and self.mBalloon.CheckCollision(self.mPerson)):
+			self.mPerson.OnCollision(self.mBalloon)
+			self.mBalloon.OnCollision(self.mPerson)
 
 		self.mPerson.Update(delta)
 		self.mBalloon.Update(delta)
 
 		self.mLevel.Draw()
 
+		for entity in self.mLevel.mEntities:
+			pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.BLUE, entity.Rect(), 2)
+
 		self.mCordRect.bottomright = self.mPerson.Rect().bottomleft
 		self.mLevel.DisplaySurface().blit(self.mCordImage, self.mCordRect)
 
 		self.mPerson.Draw()
+		pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.RED, self.mPerson.mCollisionRect, 2)
 		self.mBalloon.Draw()
 
 		self.mLevel.Blit()
+
+		if (self.mBalloon.mPopped and self.mBalloon.mPosition[0] < self.mLevel.mCameraX and self.mLives > 0):
+			self.SpawnBalloon()
 
 		return GameState.Update(self, delta)
 

@@ -1,4 +1,5 @@
 import math
+import random
 from Obstacle import *
 
 class Bee(Obstacle):
@@ -6,9 +7,9 @@ class Bee(Obstacle):
 		Obstacle.__init__(self, kernel, level)
 
 		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("Bee1.bmp")
-		self.mSolid = 1
+		self.mSolid = 0
 		self.mFloatMax = 15
-		self.mFloatDistance = 0
+		self.mFloatDistance = random.randrange(-1 * self.mFloatMax, self.mFloatMax)
 		self.mModifier = 1
 		self.mValue = 0
 

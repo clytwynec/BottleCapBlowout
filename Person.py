@@ -11,6 +11,7 @@ class Person(Entity):
 
 		self.mImage = self.mRunImage
 		self.mRect = pygame.Rect(0, 0, 128, 128)
+		self.mCollisionRect = pygame.Rect(0, 0, 60, 115)
 
 		self.mVelocity =  [0,1]
 
@@ -25,12 +26,25 @@ class Person(Entity):
 		self.mAnimationSpeed = 5
 
 	def OnCollision(self, other):
-		if other.IsA('Collectable') or other.IsA('Obstacle'):
+		if other.IsA('Collectable'):
 			self.UpdateScore(other.mValue)
+
+		if other.IsA('Obstacle'):
+			self.UpdateScore(other.mValue)
+
+			if (other.mSolid):
+				#Moving down
+				print self.mCollisionRect.bottom, other.Rect().top
+				if (self.mVelocity[1] >= 0 and self.mCollisionRect.bottom - other.Rect().top <= 10):
+					if (self.mJumpCount > 0):
+						self.mJumpCount = 0
+						self.Run()
+
+					self.mVelocity[1] = 0
+					self.mGravity = 0
 
 		if other.IsA('Balloon'):
 			self.UpdateScore(other.mValue)
-			other.EmptyCoins()
 
 		return
 
@@ -57,7 +71,7 @@ class Person(Entity):
 
 	def Duck(self):
 		self.mImage = self.mDuckImage
-		self.mRect.height = 88
+		self.mCollisionRect.height = 88
 		self.SetPosition([ self.mPosition[0], self.mGroundLevel - self.mRect.height ])
 		self.mFrameRect = pygame.Rect(0, 0, 128, 128)
 		self.mFrameWidth = 128
@@ -84,6 +98,11 @@ class Person(Entity):
 		#Scrolling
 		self.mPosition[0] += 1
 
+		self.mGravity = 1
+
+		self.mCollisionRect.topleft = self.mPosition
+		self.mCollisionRect.top += 8
+		self.mCollisionRect.left += 10
 		Entity.Update(self, delta)  
 
 	

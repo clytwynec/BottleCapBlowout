@@ -32,6 +32,9 @@ class Entity:
 		return self.mRect
 
 	def CheckCollision(self, other):
+		if (self.mCollisionRect):
+			return self.mCollisionRect.colliderect(other.Rect())
+			
 		return self.mRect.colliderect(other.Rect())
 
 	def Update(self, delta):

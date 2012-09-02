@@ -8,9 +8,9 @@ class BottleCap(Collectable):
 		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("Bottlecap.bmp")
 		#self.mCollideSound =
 		self.mSolid = 1
-		self.mFloatMax = 3
+		self.mFloatMax = 0
 		self.mFloatDistance = 0
-		self.mModifier = 1
+		self.mModifier = 0
 		self.mValue = 5
 
 
