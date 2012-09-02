@@ -22,12 +22,15 @@ class GS_Game(GameState):
 	def Initialize(self):
 		self.mLevel.LoadLevel(self.mLevelName)
 
+		self.mCordImage, self.mCordRect = self.mKernel.ImageManager().LoadImage("cord.bmp")
+		self.mCordRect.bottomleft = (0, self.mGroundLevel)
+
 		self.mPerson = Person(self.mKernel, self.mLevel)
-		self.mPerson.SetPosition([0, self.mGroundLevel])
+		self.mPerson.SetPosition([128, self.mGroundLevel])
 		self.mPerson.SetGroundLevel(self.mGroundLevel)
 
 		self.mBalloon = Balloon(self.mKernel, self.mLevel)
-		self.mBalloon.SetPosition([400, 0])
+		self.mBalloon.SetPosition([ 128 + 128, self.mGroundLevel - self.mBalloon.Rect().height - 128 ])
 		self.mBalloon.mGroundLevel = 500
 
 		return GameState.Initialize(self)
@@ -74,6 +77,10 @@ class GS_Game(GameState):
 		self.mBalloon.Update(delta)
 
 		self.mLevel.Draw()
+
+		self.mCordRect.bottomright = self.mPerson.Rect().bottomleft
+		self.mLevel.DisplaySurface().blit(self.mCordImage, self.mCordRect)
+
 		self.mPerson.Draw()
 		self.mBalloon.Draw()
 
@@ -87,4 +94,6 @@ class GS_Game(GameState):
 			self.mHighScores.append[self.mLevelName : self.mPerson.mScore]
 
 		self.mLevel.Blit()
-		return GameState.Update(self, delta)>>>>>>> other
+
+		return GameState.Update(self, delta)
+		

@@ -21,7 +21,8 @@ class GS_MainMenu(GS_MenuBase):
 		self.mMenuRects["Exit"].topleft = (400 - self.mMenuRects["Exit"].width / 2, 400)
 
 	def Update(self, delta):
+		#self.mLevel.Scroll(1)
 		self.mLevel.Draw()
 		self.mLevel.Blit()
-		
+
 		GS_MenuBase.Update(self, delta)

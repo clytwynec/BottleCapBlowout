@@ -10,7 +10,7 @@ class Person(Entity):
 		self.mJumpImage2, self.mJumpRect2 = self.mKernel.ImageManager().LoadImage("player_jump2.bmp")
 
 		self.mImage = self.mRunImage
-		self.mRect = self.mRunRect
+		self.mRect = pygame.Rect(0, 0, 128, 128)
 
 		self.mVelocity =  [0,1]
 
@@ -24,7 +24,7 @@ class Person(Entity):
 		self.mFrameWidth = 128
 		self.mAnimationSpeed = 5
 
-	def OnCollision(self, other):	
+	def OnCollision(self, other):
 		if other.IsA('Collectable') or other.IsA('Obstacle'):
 			self.UpdateScore(other.mValue)
 
@@ -39,6 +39,7 @@ class Person(Entity):
 
 	def UpdateScore(self, pointsVal):
 		self.mScore += pointsVal
+
 		return self.mScore
 
 	def Jump(self):
@@ -56,14 +57,14 @@ class Person(Entity):
 
 	def Duck(self):
 		self.mImage = self.mDuckImage
-		self.mRect = self.mDuckRect
+		self.mRect.height = 88
 		self.SetPosition([ self.mPosition[0], self.mGroundLevel - self.mRect.height ])
-		self.mFrameRect = pygame.Rect(0, 0, 44, 82)
-		self.mFrameWidth = 44
+		self.mFrameRect = pygame.Rect(0, 0, 128, 128)
+		self.mFrameWidth = 128
 
 	def Run(self):
 		self.mImage = self.mRunImage
-		self.mRect = self.mRunRect
+		self.mRect.height = 128
 		self.mFrameWidth = 128
 		self.mFrameRect = pygame.Rect(0, 0, 128, 128)
 
