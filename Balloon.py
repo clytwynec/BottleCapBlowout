@@ -10,8 +10,9 @@ class Balloon(Entity):
 		self.mPoppedImage, poppedRect = self.mKernel.ImageManager().LoadImage("balloon_popped.bmp")
 
 		self.mImage = self.mUnpoppedImage
+		self.mSoundState = 1
 
-		#self.mCollideSound =
+		self.mCollideSound = self.mKernel.SoundManager().LoadSound("BalloonPop.wav")
 		self.mValue = 0
 		self.mBlown = 0  # 0 = blower off, 1 = blower on
 		self.mGravity = 15 #slope
@@ -63,7 +64,8 @@ class Balloon(Entity):
 
 
 	def BalloonPop(self):
-		#self.mCollideSound.play()
+		if self.mSoundState == 1:
+			self.mCollideSound.play()
 		self.mImage = self.mPoppedImage
 		self.mValue = 0 
 		self.mPopped = True
@@ -89,7 +91,8 @@ class Balloon(Entity):
 	 			if (self.mBlowChannel and self.mBlowChannel.get_sound()):
 	 				self.mBlowChannel.stop()
 	 				self.mBlowChannel = None
-	 				self.mBlowEndSound.play()
+	 				if self.mSoundState == 1:
+	 					self.mBlowEndSound.play()
 
 				self.mVelocity[0] = -1 * float(self.mGravity) / delta
 				self.mPosition[0] += self.mVelocity[0]
@@ -103,11 +106,12 @@ class Balloon(Entity):
 					self.mVelocity = [0, 0]
 
 	 		elif self.mBlown == 1:
-	 			if (not self.mBlowChannel):
-	 				self.mBlowChannel = self.mBlowStartSound.play()
-	 				self.mBlowChannel.queue(self.mBlowSound)
-	 			elif (not self.mBlowChannel.get_queue()):
-	 				self.mBlowChannel.queue(self.mBlowSound)
+	 			if self.mSoundState == 1:
+	 				if (not self.mBlowChannel):
+	 					self.mBlowChannel = self.mBlowStartSound.play()
+	 					self.mBlowChannel.queue(self.mBlowSound)
+	 				elif (not self.mBlowChannel.get_queue()):
+	 					self.mBlowChannel.queue(self.mBlowSound)
 
 				self.mVelocity[0] += float(self.mBlowStrength) / delta
 				self.mVelocity[1] += -1.0 * float(self.mBlowStrength) / delta

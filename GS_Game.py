@@ -28,10 +28,13 @@ class GS_Game(GameState):
 
 		self.mCurrentLevel = 1
 		self.mLevelComplete = False
+		self.mSoundState = 1
+		self.mMusic = self.mKernel.SoundManager().LoadSound("BGmusic_flyaway.wav")
+		self.mMusic.set_volume(.3)
 
 	def Initialize(self):
 		self.LoadLevel("Level1")
-
+		self.mMusic.play(-1)
 		return GameState.Initialize(self)
 
 	def LoadLevel(self, levelName):
@@ -66,12 +69,15 @@ class GS_Game(GameState):
 		return GameState.Destroy(self)
 
 	def Pause(self):
-
+		self.mMusic.stop()
 		return GameState.Pause(self)
 
 	def Unpause(self):
-
+		self.mMusic.play(-1)
 		return GameState.Unpause(self)
+
+
+
 
 	def HandleEvent(self, event):
 		if (event.type == QUIT):
@@ -88,6 +94,12 @@ class GS_Game(GameState):
 				self.mPaused = (self.mPaused + 1) % 2
 			elif (event.key == K_ESCAPE):	
 				self.mGameStateManager.SwitchState('MainMenu')
+			elif (event.key == K_m):
+				for entity in self.mLevel.mEntities:
+					entity.mSoundState = (entity.mSoundState +1) % 2
+				self.mBalloon.mSoundState = (self.mBalloon.mSoundState +1) % 2
+				self.mSoundState = (self.mSoundState +1) % 2
+
 
 		elif(event.type == KEYUP):
 			if (event.key == K_SPACE):

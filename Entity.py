@@ -2,6 +2,7 @@ class Entity:
 	def __init__(self, kernel, level):
 		self.mKernel = kernel
 		self.mLevel = level
+		self.mSoundState = 1
 
 		self.mSolid = 0
 		self.mPosition = [0, 0]

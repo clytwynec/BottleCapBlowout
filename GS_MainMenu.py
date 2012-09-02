@@ -11,7 +11,7 @@ class GS_MainMenu(GS_MenuBase):
 		self.mLevel = Level(self.mKernel, 800)
 		self.mLevel.LoadLevel("MainMenu.lvl")
 
-		self.mHeading, self.mHeadingRect = self.mKernel.ImageManager().LoadImage("heading.bmp")
+		self.mHeading, self.mHeadingRect = self.mKernel.ImageManager().LoadImage("BottleCapBlowout.bmp")
 		self.mHeadingRect.topleft = (400 - self.mHeadingRect.width / 2, 50)
 
 		
