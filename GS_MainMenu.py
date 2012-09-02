@@ -5,6 +5,8 @@ class GS_MainMenu(GS_MenuBase):
 	def __init__(self, kernel, gsm):
 		GS_MenuBase.__init__(self, "MainMenu", kernel, gsm)
 
+		kernel.ImageManager().LoadImage("resume.bmp")
+
 	def Initialize(self):
 		self.mLevel = Level(self.mKernel, 800)
 		self.mLevel.LoadLevel("MainMenu.lvl")
@@ -12,21 +14,35 @@ class GS_MainMenu(GS_MenuBase):
 		self.mHeading, self.mHeadingRect = self.mKernel.ImageManager().LoadImage("heading.bmp")
 		self.mHeadingRect.topleft = (400 - self.mHeadingRect.width / 2, 50)
 
-		if self.mGameStateManager.GetState("Game").IsInitialized():
-			self.mMenuImages["Game"], self.mMenuRects["Game"] = self.mKernel.ImageManager().LoadImage("resume.bmp")
-			self.mMenuRects["Game"].topleft = (400 - self.mMenuRects["Game"].width / 2, 150)
+		
+		print "inited"
 
 		self.mMenuImages["NewGame"], self.mMenuRects["NewGame"] = self.mKernel.ImageManager().LoadImage("newgame.bmp")
 		self.mMenuRects["NewGame"].topleft = (400 - self.mMenuRects["NewGame"].width / 2, 250)
+		self.mMenuItems["NewGame"] = self.mMenuImages["NewGame"]
 
 		self.mMenuImages["Tutorial"], self.mMenuRects["Tutorial"] = self.mKernel.ImageManager().LoadImage("tutorial.bmp")
 		self.mMenuRects["Tutorial"].topleft = (400 - self.mMenuRects["Tutorial"].width / 2, 350)
+		self.mMenuItems["Tutorial"] = self.mMenuImages["Tutorial"]
 
 		self.mMenuImages["EditorMenu"], self.mMenuRects["EditorMenu"] = self.mKernel.ImageManager().LoadImage("editor.bmp")
 		self.mMenuRects["EditorMenu"].topleft = (780 - self.mMenuRects["EditorMenu"].width, 550)
+		self.mMenuItems["EditorMenu"] = self.mMenuImages["EditorMenu"]
 
 		self.mMenuImages["Exit"], self.mMenuRects["Exit"] = self.mKernel.ImageManager().LoadImage("exit.bmp")
 		self.mMenuRects["Exit"].topleft = (400 - self.mMenuRects["Exit"].width / 2, 450)
+		self.mMenuItems["Exit"] = self.mMenuImages["Exit"]
+
+		GS_MenuBase.Initialize(self)
+
+	def Unpause(self):
+		if "Game" not in self.mMenuImages and self.mGameStateManager.GetState("Game").IsInitialized():
+			self.mMenuImages["Game"], self.mMenuRects["Game"] = self.mKernel.ImageManager().LoadImage("resume.bmp")
+			self.mMenuRects["Game"].topleft = (400 - self.mMenuRects["Game"].width / 2, 150)
+			self.mMenuItems["Game"] = self.mMenuImages["Game"]
+
+		GS_MenuBase.Unpause(self)
+
 
 	def HandleEvent(self, event):
 		if (event.type == MOUSEBUTTONDOWN):
