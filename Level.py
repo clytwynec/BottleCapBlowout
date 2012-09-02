@@ -6,6 +6,8 @@ import Colors
 
 from pygame.locals import *
 
+from House import *
+
 class Level:
 	def __init__(self, kernel, screenSize):
 		self.mKernel = kernel

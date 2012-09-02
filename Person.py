@@ -31,6 +31,9 @@ class Person(Entity):
 		self.mFrameWidth = 128
 		self.mAnimationSpeed = 4
 
+		self.mStopped = False
+		self.mDead = False
+
 	def OnCollision(self, other):
 		if other.IsA('Collectable'):
 			self.UpdateScore(other.mValue)
@@ -41,7 +44,9 @@ class Person(Entity):
 		if other.IsA('Obstacle'):
 			self.UpdateScore(other.mValue)
 
-			if (other.mSolid):
+			if (other.mDeadly):
+				self.mDead = True
+			elif (other.mSolid):
 				if (self.mVelocity[1] >= 0 and self.mCollisionRect.bottom - other.CollisionRect().top <= 16):
 					if (self.mJumpCount > 0):
 						self.mJumpCount = 0
@@ -51,7 +56,7 @@ class Person(Entity):
 					self.mGravity = 0
 					self.mPosition[1] -= self.mCollisionRect.bottom - other.Rect().top - 1
 				elif (self.mCollisionRect.right - other.CollisionRect().left > 0):
-					self.mVelocity[0] = -1 * self.mLevel.mScrollSpeed
+					self.mStopped = True
 
 
 		if other.IsA('Balloon'):
@@ -96,23 +101,36 @@ class Person(Entity):
 		self.mFrameRect = pygame.Rect(0, 0, 128, 128)
 
 	def Update(self, delta):
-		self.mVelocity[1] += self.mGravity 
-		self.mPosition[1] += self.mVelocity[1] 
+		if (not self.mStopped and self.mPosition[0] < self.mScreenOffset + self.mLevel.mCameraX):
+			distDelta = min(self.mScreenOffset + self.mLevel.mCameraX - self.mPosition[0], 2)
+			self.mVelocity[0] = distDelta * self.mLevel.mScrollSpeed
+		elif (self.mStopped):
+			self.mVelocity[0] = -1 * self.mLevel.mScrollSpeed
 
-		if self.mPosition[1] > self.mGroundLevel - self.mRect.height:
-			self.mPosition[1] = self.mGroundLevel - self.mRect.height
+		if (self.mPosition[0] + self.mRect.width - self.mLevel.mCameraX < 0):
+			self.mDead = True
 
-			if (self.mJumpCount > 0):
-				self.mJumpCount = 0
-				self.Run()
+		if (not self.mDead):
 
-			self.mVelocity[1] = 0
+			self.mVelocity[1] += self.mGravity 
+			self.mPosition[1] += self.mVelocity[1] 
 
-		#Scrolling
-		self.mPosition[0] += self.mVelocity[0] + self.mLevel.mScrollSpeed
+			if self.mPosition[1] > self.mGroundLevel - self.mRect.height:
+				self.mPosition[1] = self.mGroundLevel - self.mRect.height
+
+				if (self.mJumpCount > 0):
+					self.mJumpCount = 0
+					self.Run()
+
+				self.mVelocity[1] = 0
+
+			#Scrolling
+			self.mPosition[0] += self.mVelocity[0] + self.mLevel.mScrollSpeed
+
+		# Reset Stuffs
 		self.mVelocity[0] = 0
-
 		self.mGravity = 1
+		self.mStopped = False
 
 		self.mCollisionRect.left = self.mPosition[0] + 10
 		self.mCollisionRect.bottom = self.mPosition[1] + self.mRect.height - 10
