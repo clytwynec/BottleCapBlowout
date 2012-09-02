@@ -35,7 +35,8 @@ class GS_Game(GameState):
 		self.mCordRect.bottomleft = (0, self.mGroundLevel)
 
 		self.mPerson = Person(self.mKernel, self.mLevel)
-		self.mPerson.SetPosition([128, self.mGroundLevel])
+		self.mPerson.SetPosition([128, self.mGroundLevel
+		self.mPerson.mScreenOffset = 128
 		self.mPerson.SetGroundLevel(self.mGroundLevel)
 
 		self.SpawnBalloon()

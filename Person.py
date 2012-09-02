@@ -16,6 +16,8 @@ class Person(Entity):
 		self.mRect = pygame.Rect(0, 0, 128, 128)
 		self.mCollisionRect = pygame.Rect(0, 0, 60, self.mStandHeight)
 
+		self.mScreenOffset = 0
+
 		self.mVelocity =  [0,1]
 
 		self.mGravity = 1
@@ -50,6 +52,7 @@ class Person(Entity):
 					self.mPosition[1] -= self.mCollisionRect.bottom - other.Rect().top - 1
 				elif (self.mCollisionRect.right - other.CollisionRect().left > 0):
 					self.mVelocity[0] = -1 * self.mLevel.mScrollSpeed
+
 
 		if other.IsA('Balloon'):
 			self.UpdateScore(other.mValue)
