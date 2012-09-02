@@ -19,10 +19,12 @@ class GS_Game(GameState):
 
 		self.mHighScores = {}
 
+		self.mScrollSpeed = 2
 		self.mLives = 3
 
 	def Initialize(self):
 		self.mLevel.LoadLevel(self.mLevelName)
+		self.mLevel.mScrollSpeed = self.mScrollSpeed
 
 		self.mCordImage, self.mCordRect = self.mKernel.ImageManager().LoadImage("cord.bmp")
 		self.mCordRect.bottomleft = (0, self.mGroundLevel)
@@ -73,7 +75,7 @@ class GS_Game(GameState):
 		return GameState.HandleEvent(self, event)
 
 	def Update(self, delta):
-		self.mLevel.Scroll(1)
+		self.mLevel.Scroll(self.mScrollSpeed)
 		self.mLevel.Update(delta)
 
 		self.mLevel.CheckCollisions(self.mPerson)
@@ -90,6 +92,9 @@ class GS_Game(GameState):
 
 		for entity in self.mLevel.mEntities:
 			pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.BLUE, entity.Rect(), 2)
+
+			if (entity.mCollisionRect):
+				pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.RED, entity.mCollisionRect, 2)
 
 		self.mCordRect.bottomright = self.mPerson.Rect().bottomleft
 		self.mLevel.DisplaySurface().blit(self.mCordImage, self.mCordRect)

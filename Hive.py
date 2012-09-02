@@ -15,10 +15,13 @@ class Hive(Obstacle):
 		self.mAnimationSpeed = 10
 		self.mFrameWidth = 128
 
+		self.mCollisionRect = pygame.Rect(0, 0, 64, 64)
+
 	#def OnCollision(self, other):
 		#print "Ouch, a box!!"
 		## Audio and Animations here
 
 	def Update(self, delta):
+		self.mCollisionRect.topleft = (self.mRect.left, self.mRect.top + 60)
 
 		return Obstacle.Update(self, delta)

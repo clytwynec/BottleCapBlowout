@@ -23,7 +23,7 @@ class Person(Entity):
 
 		self.mFrameRect = pygame.Rect(0, 0, 128, 128)
 		self.mFrameWidth = 128
-		self.mAnimationSpeed = 5
+		self.mAnimationSpeed = 4
 
 	def OnCollision(self, other):
 		if other.IsA('Collectable'):
@@ -96,7 +96,7 @@ class Person(Entity):
 			self.mVelocity[1] = 0
 
 		#Scrolling
-		self.mPosition[0] += 1
+		self.mPosition[0] += self.mLevel.mScrollSpeed
 
 		self.mGravity = 1
 

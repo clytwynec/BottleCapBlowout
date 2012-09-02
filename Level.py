@@ -27,23 +27,22 @@ class Level:
 		self.mBackgroundX = []
 		self.mBackgroundY = []
 
+
 		for layer in range(3):
 			img, rect = kernel.ImageManager().LoadImage("bg_" + str(layer) + ".bmp")
 			self.mBackgroundImages.append(img)
 			self.mBackgroundX.append(0)
 			self.mBackgroundY.append(500 - img.get_rect().height - (layer * 50))
 
+		self.mBackgroundY[0] -= 25
+		self.mBackgroundY[2] -= 25
+
 		bgimg, bgrect = kernel.ImageManager().LoadImage("bg_test.bmp")
 		self.mBackgroundImages.append(bgimg)
 		self.mBackgroundX.append(0)
 		self.mBackgroundY.append(0)
 
-		self.mBackgroundImages.reverse()
-		self.mBackgroundX.reverse()
-		self.mBackgroundY.reverse()
-
-		self.mParallaxDamping = 2
-
+		self.mScrollSpeed = 0
 		self.mCameraX = 0
 
 		return
@@ -210,7 +209,7 @@ class Level:
 		self.mCameraX += scrollAmount
 
 		for layer in range(len(self.mBackgroundX)):
-			self.mBackgroundX[layer] += scrollAmount * (layer)
+			self.mBackgroundX[layer] += float(scrollAmount) / (layer + 1)
 
 	def DrawBackgroundLayer(self, layerIndex):
 		image = self.mBackgroundImages[layerIndex]
@@ -235,7 +234,7 @@ class Level:
 	##############################################	
 	def Draw(self):
 		self.mLevelSurface.fill(Colors.BLACK)
-		for layer in range(len(self.mBackgroundImages)):
+		for layer in range(len(self.mBackgroundImages) - 1, -1, -1):
 			self.DrawBackgroundLayer(layer)
 
 		for entity in self.mEntities:

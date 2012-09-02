@@ -109,5 +109,5 @@ class Balloon(Entity):
 		Entity.Update(self, delta)  
 
 	def Scrolling(self, delta):
-		self.mPosition[0] += 1
+		self.mPosition[0] += self.mLevel.mScrollSpeed
 			
