@@ -8,6 +8,7 @@ class Balloon(Entity):
 		Entity.__init__(self, kernel, level)
 		self.mUnpoppedImage, self.mRect = self.mKernel.ImageManager().LoadImage("balloon.bmp")
 		self.mPoppedImage, poppedRect = self.mKernel.ImageManager().LoadImage("balloon_popped.bmp")
+		self.mPoppingImage, poppingRect = self.mKernel.ImageManager().LoadImage("balloon_popping.bmp")
 
 		self.mImage = self.mUnpoppedImage
 
@@ -64,7 +65,8 @@ class Balloon(Entity):
 
 	def BalloonPop(self):
 		#self.mCollideSound.play()
-		self.mImage = self.mPoppedImage
+		self.mImage = self.mPoppingImage
+		self.mAnimationSpeed = 1
 		self.mValue = 0 
 		self.mPopped = True
 		return
@@ -124,14 +126,19 @@ class Balloon(Entity):
 					self.mPosition[1] = 0
 					self.mPosition[0] -= self.mVelocity[0]
 		else:
-			self.mVelocity =[-5,1]
-			self.mVelocity[1] += float(self.mGravity) / delta
-			self.mPosition[1] += self.mVelocity[1]
-			self.mPosition[0] -= self.mVelocity[1]
+			if (self.mImage == self.mPoppingImage and self.mFrameRect.left == (3 * self.mFrameWidth) and self.mAnimationTick >= self.mAnimationSpeed):
+				self.mImage = self.mPoppedImage
+			else:
 
-			if self.mPosition[1] > self.mGroundLevel - 43:
-					self.mPosition[1] = self.mGroundLevel - 43
-					self.mPosition[0] += self.mVelocity[0]
+				self.mVelocity =[-5,1]
+				self.mVelocity[1] += float(self.mGravity) / delta
+				self.mPosition[1] += self.mVelocity[1]
+				self.mPosition[0] -= self.mVelocity[1]
+
+				if self.mPosition[1] > self.mGroundLevel - 43:
+						self.mPosition[1] = self.mGroundLevel - 43
+						self.mPosition[0] += self.mVelocity[0]
+						self.mAnimationTick = 0
 
 
 		self.Scrolling(delta)

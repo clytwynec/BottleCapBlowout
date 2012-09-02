@@ -20,17 +20,20 @@ class GS_Game(GameState):
 		self.mHighScores = {}
 
 		self.mScrollSpeed = 2
-		self.mLives = 3
 
 		self.mPaused = 0
 
 		self.mHouse = None
 
-		self.mCurrentLevel = 1
-		self.mLevelComplete = False
+		self.mTicks = 0
+		self.mWaitTime = 0
 
 	def Initialize(self):
 		self.LoadLevel("Level1")
+
+		self.mLives = 3
+		self.mCurrentLevel = 1
+		self.mLevelComplete = False
 
 		return GameState.Initialize(self)
 
@@ -101,15 +104,19 @@ class GS_Game(GameState):
 		if self.mPerson.CheckCollision(self.mHouse):
 			self.mLevelComplete = True
 
-		if self.mLevel.mCameraX > (self.mLevel.mLevelLength - 800 * 2):
+		if self.mLevel.mCameraX > (self.mLevel.mLevelLength - 900):
 			self.mBalloon.mBlown = 0
 
 		if not self.mLevelComplete and self.mPaused == 0:
-			self.mLevel.Scroll(self.mScrollSpeed)
+			if (self.mPerson.mDead == 0):
+				self.mLevel.Scroll(self.mScrollSpeed)
+
 			self.mLevel.Update(delta)
 
 			self.mPerson.Update(delta)
-			self.mBalloon.Update(delta)
+
+			if (self.mPerson.mDead == 0):
+				self.mBalloon.Update(delta)
 
 			self.mLevel.CheckCollisions(self.mPerson)
 			self.mLevel.CheckCollisions(self.mBalloon)
@@ -120,22 +127,20 @@ class GS_Game(GameState):
 					
 			if (self.mBalloon.mPopped and self.mBalloon.mPosition[0] < self.mLevel.mCameraX and self.mLives > 0):
 				self.SpawnBalloon()
+
+			if (self.mPerson.mResetting):
+				self.SpawnBalloon()
+				self.mPerson.mResetting = False
 			
 		self.mLevel.Draw()
-	
-		# for entity in self.mLevel.mEntities:
-		# 	pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.BLUE, entity.Rect(), 2)
-
-		# 	if (entity.mCollisionRect):
-		# 		pygame.draw.rect(self.mLevel.DisplaySurface(), Colors.RED, entity.mCollisionRect, 2)
 
 		self.mCordRect.bottomright = self.mPerson.Rect().bottomleft
 		self.mLevel.DisplaySurface().blit(self.mCordImage, self.mCordRect)
 
+		self.mBalloon.Draw()
 		self.mHouse.DrawBack()
 		self.mPerson.Draw()
 		self.mHouse.Draw()
-		self.mBalloon.Draw()
 
 		self.mLevel.Blit()
 

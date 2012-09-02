@@ -8,6 +8,7 @@ class Person(Entity):
 		self.mDuckImage, self.mDuckRect = self.mKernel.ImageManager().LoadImage("player_duck.bmp")
 		self.mJumpImage1, self.mJumpRect1 = self.mKernel.ImageManager().LoadImage("player_jump1.bmp")
 		self.mJumpImage2, self.mJumpRect2 = self.mKernel.ImageManager().LoadImage("player_jump2.bmp")
+		self.mDeadImage, deadRect = self.mKernel.ImageManager().LoadImage("player_dead.bmp")
 
 		self.mDuckHeight = 88
 		self.mStandHeight = 115
@@ -31,8 +32,9 @@ class Person(Entity):
 		self.mFrameWidth = 128
 		self.mAnimationSpeed = 4
 
+		self.mResetting = False
 		self.mStopped = False
-		self.mDead = False
+		self.mDead = 0
 
 	def OnCollision(self, other):
 		if other.IsA('Collectable'):
@@ -45,7 +47,8 @@ class Person(Entity):
 			self.UpdateScore(other.mValue)
 
 			if (other.mDeadly):
-				self.mDead = True
+				self.mDead = 2000
+				self.Reset()
 			elif (other.mSolid):
 				if (self.mVelocity[1] >= 0 and self.mCollisionRect.bottom - other.CollisionRect().top <= 16):
 					if (self.mJumpCount > 0):
@@ -105,7 +108,18 @@ class Person(Entity):
 		self.mCollisionRect.bottom = self.mPosition[1] + self.mRect.height - 10
 		self.mCollisionRect.left += 10
 
+	def Reset(self):
+		self.SetPosition([ self.mPosition[0] - 100, self.mPosition[1] ])
+		self.mLevel.mCameraX = self.mPosition[0] - self.mScreenOffset
+		self.mImage = self.mDeadImage
+		self.mFrameWidth = 128
+		self.mFrameRect = pygame.Rect(0, 0, 128, 128)
+		self.mResetting = True
+
 	def Update(self, delta):
+		wasDead = self.mDead > 0
+		self.mDead = max(0, self.mDead - delta)
+
 		if (not self.mStopped and self.mPosition[0] < self.mScreenOffset + self.mLevel.mCameraX):
 			distDelta = min(self.mScreenOffset + self.mLevel.mCameraX - self.mPosition[0], 2)
 			self.mVelocity[0] = distDelta * self.mLevel.mScrollSpeed
@@ -113,9 +127,10 @@ class Person(Entity):
 			self.mVelocity[0] = -1 * self.mLevel.mScrollSpeed
 
 		if (self.mPosition[0] + self.mRect.width - self.mLevel.mCameraX < 0):
-			self.mDead = True
+			self.mDead = 2000
+			self.Reset()
 
-		if (not self.mDead):
+		if (self.mDead <= 0):
 			self.mVelocity[1] += self.mGravity 
 			self.mPosition[1] += self.mVelocity[1] 
 
@@ -130,6 +145,9 @@ class Person(Entity):
 
 			#Scrolling
 			self.mPosition[0] += self.mVelocity[0] + self.mLevel.mScrollSpeed
+
+		elif (wasDead and self.mDead <= 0):
+			self.Run()
 
 		# Reset Stuffs
 		self.mVelocity[0] = 0

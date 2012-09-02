@@ -11,7 +11,6 @@ class Collectable(Entity):
 
 
 	def OnCollision(self, other):
-		print "Colliding!\n";
 		if not other.IsA('Obstacle'):
 			if self.mCollideSound:
 				self.mCollideSound.play()
