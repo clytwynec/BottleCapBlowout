@@ -35,7 +35,7 @@ class GS_Game(GameState):
 		self.mLevelCompleteImage, self.mLevelCompleteRect = self.mKernel.ImageManager().LoadImage("levelcomplete.bmp")
 		self.mMainMenuImage, self.mMainMenuRect = self.mKernel.ImageManager().LoadImage("mainmenu_small.bmp")
 		self.mNextLevelImage, self.mNextLevelRect = self.mKernel.ImageManager().LoadImage("nextlevel.bmp")
-		self.mHighScoreImage, self.mHighScoreRect = self.mKernel.ImageManager().LoadImage("highscore.bmp")
+		self.mHighScoreImage, self.mHighScoreRect = self.mKernel.ImageManager().LoadImage("highscore_alert.bmp")
 
 		self.mGameOverRect.topleft = (400 - self.mGameOverRect.width / 2, 150)
 		self.mLevelCompleteRect.topleft = (400 - self.mLevelCompleteRect.width / 2, 50)
