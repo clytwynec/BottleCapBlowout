@@ -7,6 +7,7 @@ class Hive(Obstacle):
 		self.mImage, self.mImageRect = self.mKernel.ImageManager().LoadImage("hive.bmp")
 		self.mRect = pygame.Rect(0, 0, 128, 320)
 		#self.mCollideSound =
+		self.mSharp = 1
 		self.mSolid = 1
 		self.mTime = 0
 		self.mValue = 0

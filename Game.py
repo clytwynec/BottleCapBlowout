@@ -84,5 +84,5 @@ while (1):
 
 	kernel.FlipDisplay()
 
-	ticker.tick()
+	ticker.tick(60)
 	

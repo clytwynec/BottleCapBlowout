@@ -58,7 +58,7 @@ class Balloon(Entity):
 		if other.IsA('Collectable'):
 			self.UpdateBasket(other.mValue)
 
-		if other.IsA('Obstacle'):
+		if other.IsA('Obstacle') and other.mSharp == 1:
 			self.BalloonPop()
 
 		if other.IsA('Person'):
