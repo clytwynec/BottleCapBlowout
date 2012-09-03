@@ -163,8 +163,8 @@ class GS_Editor(GameState):
 			self.mGhostEntity.Draw()
 			pygame.draw.rect(self.mKernel.DisplaySurface(), Colors.RED, self.mGhostEntity.Rect(), 2)
 
-		pygame.draw.line(self.mKernel.DisplaySurface(), Colors.RED, (0, self.mGroundLevel), (800, self.mGroundLevel), 4)
-		pygame.draw.line(self.mKernel.DisplaySurface(), Colors.BLUE, (self.mLevel.mLevelLength - 1500 - self.mLevel.mCameraX, 0), (self.mLevel.mLevelLength - 1500 - self.mLevel.mCameraX, 600), 4)
+		pygame.draw.line(self.mKernel.DisplaySurface(), Colors.BLUE, (0, self.mGroundLevel), (800, self.mGroundLevel), 4)
+		pygame.draw.line(self.mKernel.DisplaySurface(), Colors.RED, (self.mLevel.mLevelLength - 1500 - self.mLevel.mCameraX, 0), (self.mLevel.mLevelLength - 1500 - self.mLevel.mCameraX, 600), 4)
 
 		pygame.draw.rect(self.mKernel.DisplaySurface(), Colors.LIGHT_GREY, self.mEntityBox)
 

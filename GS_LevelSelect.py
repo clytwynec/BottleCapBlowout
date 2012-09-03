@@ -23,7 +23,7 @@ class GS_LevelSelect(GS_MenuBase):
 		path = os.path.join("data", "levels")
 		filecount = 0
 		for filename in os.listdir(path):
-			if ("lvl" in filename):
+			if ("lvl" in filename and "Level" in filename):
 				filename = filename[0:-4]
 				self.mMenuImages["Game_" + filename] = self.mFont.render(filename, True, Colors.WHITE)
 				self.mMenuRects["Game_" + filename] = self.mMenuImages["Game_" + filename].get_rect()
