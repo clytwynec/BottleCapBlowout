@@ -5,8 +5,12 @@ class HighScores(GS_MenuBase):
 	def __init__(self, kernel, gsm):
 		GS_MenuBase.__init__(self, "HighScores", kernel, gsm)
 
+
 	def Initialize(self):
 		GS_MenuBase.Initialize(self)
+
+		self.mHeading, self.mHeadingRect = self.mKernel.ImageManager().LoadImage("highscore.bmp")
+		self.mHeadingRect.topleft = (400 - self.mHeadingRect.width / 2, 50)
 
 		self.mHighScores = []
 		self.LoadScores()
@@ -45,8 +49,8 @@ class HighScores(GS_MenuBase):
 		
 
 	def Update(self, delta):
-		Top = 40
-		Left = 280
+		Top = 170
+		Left = 290
 		for i in range(0, len(self.mHighScores)):
 			textSurface = self.mFont.render(str(self.mHighScores[i]["Level"])[0:-4]+ ":  " + str(self.mHighScores[i]["Score"]), True, Colors.WHITE)
 			self.mKernel.DisplaySurface().blit(textSurface, (Left, Top, textSurface.get_rect().width, textSurface.get_rect().height))
