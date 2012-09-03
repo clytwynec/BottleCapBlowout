@@ -24,6 +24,7 @@ from GS_Editor import *
 from GS_MainMenu import *
 from GS_EditorMenu import *
 from GS_Game import *
+from HighScores import *
 
 #random.seed(0)
 
@@ -50,6 +51,7 @@ gsm = GameStateManager()
 gsm.RegisterState(GS_MainMenu(kernel, gsm))
 gsm.RegisterState(GS_EditorMenu(kernel, gsm))
 gsm.RegisterState(GS_Game(kernel, gsm))
+gsm.RegisterState(HighScores(kernel, gsm))
 
 if (options.editlevel):
 	gsm.RegisterState(GS_Editor(kernel, gsm, options.editlevel))
