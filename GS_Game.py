@@ -28,14 +28,23 @@ class GS_Game(GameState):
 		self.mCurrentLevel = 1
 		self.mLevelComplete = False
 		self.mSoundState = 1
+
 		self.mMusic = self.mKernel.SoundManager().LoadSound("BGmusic_flyaway.wav")
 
+		self.mGameOverImage, self.mGameOverRect = self.mKernel.ImageManager().LoadImage("gameover.bmp")
+		self.mMainMenuImage, self.mMainMenuRect = self.mKernel.ImageManager().LoadImage("mainmenu.bmp")
+
+		self.mGameOverRect.topleft = (400 - self.mGameOverRect.width / 2, 150)
+		self.mMainMenuRect.topleft = (400 - self.mMainMenuRect.width / 2, 300)
+
 		self.mFont = pygame.font.SysFont("Helvetica", 16, True)
+
+		self.mPreviousPop = False
+		self.mPreviousDead = 0
 
 	def Initialize(self):
 		self.LoadLevel("Level1")
 
-		self.mLives = 3
 		self.mCurrentLevel = 1
 		self.mLevelComplete = False
 
@@ -78,6 +87,7 @@ class GS_Game(GameState):
 		self.mBalloon.mGroundLevel = 500
 
 	def Destroy(self):
+		self.mMusic.stop()
 
 		return GameState.Destroy(self)
 
@@ -120,6 +130,11 @@ class GS_Game(GameState):
 			elif (event.key == K_DOWN):
 				self.mPerson.Run()
 
+		elif (event.type == MOUSEBUTTONDOWN):
+			if (self.mMainMenuRect.collidepoint(event.pos)):
+				self.Destroy()
+				self.mGameStateManager.SwitchState("MainMenu")
+
 		return GameState.HandleEvent(self, event)
 
 	def Update(self, delta):
@@ -130,14 +145,15 @@ class GS_Game(GameState):
 			self.mBalloon.mBlown = 0
 
 		if not self.mLevelComplete and self.mPaused == 0:
-			if (self.mPerson.mDead == 0):
+			if (self.mPerson.mDead == 0 and self.mPerson.mLives > 0):
 				self.mLevel.Scroll(self.mScrollSpeed)
 
 			self.mLevel.Update(delta)
 
-			self.mPerson.Update(delta)
+			if (self.mPerson.mLives > 0):
+				self.mPerson.Update(delta)
 
-			if (self.mPerson.mDead == 0):
+			if (self.mPerson.mDead == 0):# and self.mPerson.mLives > 0):
 				self.mBalloon.Update(delta)
 
 			self.mLevel.CheckCollisions(self.mPerson)
@@ -149,9 +165,13 @@ class GS_Game(GameState):
 					
 
 			if (self.mBalloon.mPopped):
-				if (self.mBalloon.mPosition[0] < self.mLevel.mCameraX and self.mLives > 0):
-					self.SpawnBalloon()
-					self.mPerson.BlowBalloon()
+				if (not self.mPreviousPop):
+					self.mPerson.mLives -= 1
+
+				if (self.mBalloon.mPosition[0] < self.mLevel.mCameraX):
+					if (self.mPerson.mLives > 0):
+						self.SpawnBalloon()
+						self.mPerson.BlowBalloon()
 
 			if (self.mPerson.mResetting):
 				self.SpawnBalloon()
@@ -175,12 +195,18 @@ class GS_Game(GameState):
 		textSurface = self.mFont.render("Score: " + str(self.mPerson.mScore), True, Colors.WHITE)
 		self.mKernel.DisplaySurface().blit(textSurface, (150, 580, textSurface.get_rect().width, textSurface.get_rect().height))
 		
-		textSurface = self.mFont.render("Lives: " + str(self.mLives), True, Colors.WHITE)
+		textSurface = self.mFont.render("Lives: " + str(self.mPerson.mLives), True, Colors.WHITE)
 		self.mKernel.DisplaySurface().blit(textSurface, (270, 580, textSurface.get_rect().width, textSurface.get_rect().height))
 
 		textSurface = self.mFont.render("In Basket: " + str(self.mBalloon.mValue), True, Colors.WHITE)
 		self.mKernel.DisplaySurface().blit(textSurface, (390, 580, textSurface.get_rect().width, textSurface.get_rect().height))
 		
+		if (self.mPerson.mLives == 0):
+			self.mKernel.DisplaySurface().blit(self.mGameOverImage, self.mGameOverRect)
+			self.mKernel.DisplaySurface().blit(self.mMainMenuImage, self.mMainMenuRect)
+
+		self.mPreviousDead = self.mPerson.mDead
+		self.mPreviousPop = self.mBalloon.mPopped
 		
 		return GameState.Update(self, delta)
 

@@ -32,6 +32,8 @@ class Person(Entity):
 		self.mJumpCount = 0
 		self.mPause = 0
 
+		self.mLives = 3
+
 		self.mFrameRect = pygame.Rect(0, 0, 128, 128)
 		self.mFrameWidth = 128
 		self.mAnimationSpeed = 4
@@ -116,16 +118,18 @@ class Person(Entity):
 		self.mCollisionRect.left += 10
 
 	def Reset(self):
-		self.SetPosition([ max(0, self.mPosition[0] - 100), self.mPosition[1] ])
-		self.mLevel.mCameraX = max(0, self.mPosition[0] - self.mScreenOffset)
-		self.mImage = self.mDeadImage
-		self.mFrameWidth = 128
-		self.mFrameRect = pygame.Rect(0, 0, 128, 128)
-		self.mVelocity[1] = 0
-		self.mResetting = True
-		self.mJumpCount = 0
+		if (self.mLives > 0):
+			self.SetPosition([ max(0, self.mPosition[0] - 100), self.mPosition[1] ])
+			self.mLevel.mCameraX = max(0, self.mPosition[0] - self.mScreenOffset)
+			self.mImage = self.mDeadImage
+			self.mFrameWidth = 128
+			self.mFrameRect = pygame.Rect(0, 0, 128, 128)
+			self.mVelocity[1] = 0
+			self.mResetting = True
+			self.mJumpCount = 0
+			self.mLives -= 1
 
-		self.Run()
+			self.Run()
 
 	def BlowBalloon(self):
 		if (self.mSoundState == 1):
@@ -142,8 +146,12 @@ class Person(Entity):
 			self.mVelocity[0] = -1 * self.mLevel.mScrollSpeed
 
 		if (self.mPosition[0] + self.mRect.width - self.mLevel.mCameraX < 0):
-			self.mDead = 2000
-			self.Reset()
+		 	if (self.mLives > 1):
+				self.mDead = 2000
+				self.Reset()
+			elif (self.mLives > 0):
+				self.mDead = 10000
+				self.mLives -= 1
 
 		if (self.mDead <= 0):
 			self.mVelocity[1] += self.mGravity 
