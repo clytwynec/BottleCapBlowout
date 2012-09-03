@@ -11,6 +11,7 @@ class Person(Entity):
 		self.mDeadImage, deadRect = self.mKernel.ImageManager().LoadImage("player_dead.bmp")
 		self.mBlowImage, deadRect = self.mKernel.ImageManager().LoadImage("player_blow.bmp")
 
+
 		self.mDuckHeight = 88
 		self.mStandHeight = 115
 
@@ -36,7 +37,6 @@ class Person(Entity):
 		self.mResetting = False
 		self.mStopped = False
 		self.mDead = 0
-		self.mBlowing = False
 
 	def OnCollision(self, other):
 		if other.IsA('Collectable'):
@@ -74,7 +74,6 @@ class Person(Entity):
 
 	def UpdateScore(self, pointsVal):
 		self.mScore += pointsVal
-		print self.mScore
 		return self.mScore
 
 	def Jump(self):
@@ -98,14 +97,16 @@ class Person(Entity):
 			self.mCollisionRect.height = self.mDuckHeight
 
 			self.mFrameRect = pygame.Rect(0, 0, 128, 128)
+			self.mAnimationSpeed = 4
 			self.mFrameWidth = 128
 
 	def Run(self):
-		if (not self.mBlowing and self.mJumpCount == 0 and self.mDead == 0):
+		if (self.mJumpCount == 0 and self.mDead == 0):
 			self.mImage = self.mRunImage
 			self.mCollisionRect.height = self.mStandHeight
 			self.mFrameWidth = 128
 			self.mFrameRect = pygame.Rect(0, 0, 128, 128)
+			self.mAnimationSpeed = 4
 
 	def SyncCollisionRect(self):
 		self.mCollisionRect.left = self.mPosition[0] + 10
@@ -120,8 +121,8 @@ class Person(Entity):
 		self.mFrameRect = pygame.Rect(0, 0, 128, 128)
 		self.mVelocity[1] = 0
 		self.mResetting = True
-		self.mBlowing = False
 		self.mJumpCount = 0
+
 
 	def Update(self, delta):
 		wasDead = self.mDead > 0
