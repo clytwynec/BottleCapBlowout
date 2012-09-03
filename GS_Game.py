@@ -58,7 +58,12 @@ class GS_Game(GameState):
 
 		if (levelName):
 			self.LoadLevel(levelName)
-			self.mCurrentLevel = int(levelName[5])
+
+			if (levelName[5].isdigit()):
+				self.mCurrentLevel = int(levelName[5])
+			else:
+				self.mCurrentLevel = -1
+
 		elif (self.mNextLevelName):
 			self.LoadLevel(self.mNextLevelName)
 		else:
@@ -123,8 +128,6 @@ class GS_Game(GameState):
 
 	def Pause(self):
 		self.mMusic.stop()
-		self.SaveScore()
-
 		return GameState.Pause(self)
 
 	def Unpause(self):
@@ -275,10 +278,11 @@ class GS_Game(GameState):
 
 	def LoadScores(self):
 		HighScoreFile = os.path.join("data", "highscores.txt")
-		with open(HighScoreFile) as highscores:
-				scoreList = highscores.read().splitlines() 
+		if (os.path.isfile(HighScoreFile)):
+			with open(HighScoreFile) as highscores:
+					scoreList = highscores.read().splitlines() 
 
-				for i in range(0, len(scoreList)):
-					parts = scoreList[i].split()
+					for i in range(0, len(scoreList)):
+						parts = scoreList[i].split()
 
-					self.mHighScores[parts[0]] = int(parts[1])
+						self.mHighScores[parts[0]] = int(parts[1])
