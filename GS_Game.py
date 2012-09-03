@@ -32,20 +32,31 @@ class GS_Game(GameState):
 		self.mMusic = self.mKernel.SoundManager().LoadSound("BGmusic_flyaway.wav")
 
 		self.mGameOverImage, self.mGameOverRect = self.mKernel.ImageManager().LoadImage("gameover.bmp")
-		self.mMainMenuImage, self.mMainMenuRect = self.mKernel.ImageManager().LoadImage("mainmenu.bmp")
+		self.mLevelCompleteImage, self.mLevelCompleteRect = self.mKernel.ImageManager().LoadImage("levelcomplete.bmp")
+		self.mMainMenuImage, self.mMainMenuRect = self.mKernel.ImageManager().LoadImage("mainmenu_small.bmp")
+		self.mNextLevelImage, self.mNextLevelRect = self.mKernel.ImageManager().LoadImage("nextlevel.bmp")
+		self.mHighScoreImage, self.mHighScoreRect = self.mKernel.ImageManager().LoadImage("highscore.bmp")
 
 		self.mGameOverRect.topleft = (400 - self.mGameOverRect.width / 2, 150)
-		self.mMainMenuRect.topleft = (400 - self.mMainMenuRect.width / 2, 300)
+		self.mLevelCompleteRect.topleft = (400 - self.mLevelCompleteRect.width / 2, 50)
+		self.mHighScoreRect.topleft = (400 - self.mHighScoreRect.width / 2, 225)
+		self.mNextLevelRect.topleft = (600 - self.mMainMenuRect.width / 2, 350)
+		self.mMainMenuRect.topleft = (400 - self.mMainMenuRect.width / 2, 350)
 
 		self.mFont = pygame.font.SysFont("Helvetica", 16, True)
 
 		self.mPreviousPop = False
 		self.mPreviousDead = 0
+		self.mCurrentLevel = 1
+
+		self.mNextLevelName = ""
 
 	def Initialize(self):
-		self.LoadLevel("Level1")
+		if (self.mNextLevelName):
+			self.LoadLevel(self.mNextLevelName)
+		else:
+			self.LoadLevel("Level1")
 
-		self.mCurrentLevel = 1
 		self.mLevelComplete = False
 
 		for entity in self.mLevel.mEntities:
@@ -57,6 +68,12 @@ class GS_Game(GameState):
 		self.mMusic.set_volume(.3 * self.mSoundState)
 		self.mMusic.play(-1)
 		
+
+		fullLevelName = os.path.join("data", "levels", "Level" + str(self.mCurrentLevel + 1) + ".lvl")
+		if os.path.isfile(fullLevelName):
+			self.mNextLevelName = "Level" + str(self.mCurrentLevel + 1)
+			self.mMainMenuRect.topleft = (200 - self.mMainMenuRect.width / 2, 350)
+
 		return GameState.Initialize(self)
 
 	def LoadLevel(self, levelName):
@@ -134,12 +151,19 @@ class GS_Game(GameState):
 			if (self.mMainMenuRect.collidepoint(event.pos)):
 				self.Destroy()
 				self.mGameStateManager.SwitchState("MainMenu")
+			elif (self.mNextLevelRect.collidepoint(event.pos)):
+				self.mCurrentLevel += 1
+				self.Destroy()
+				self.Initialize()
 
 		return GameState.HandleEvent(self, event)
 
 	def Update(self, delta):
-		if self.mPerson.CheckCollision(self.mHouse):
-			self.mLevelComplete = True
+		if (not self.mLevelComplete):
+			if self.mPerson.CheckCollision(self.mHouse):
+				self.mLevelComplete = True
+				self.SaveScore()
+				self.mPerson.Done()
 
 		if self.mLevel.mCameraX > (self.mLevel.mLevelLength - 1500):
 			self.mBalloon.mBlown = 0
@@ -205,6 +229,16 @@ class GS_Game(GameState):
 			self.mKernel.DisplaySurface().blit(self.mGameOverImage, self.mGameOverRect)
 			self.mKernel.DisplaySurface().blit(self.mMainMenuImage, self.mMainMenuRect)
 
+		if (self.mLevelComplete):
+			self.mKernel.DisplaySurface().blit(self.mLevelCompleteImage, self.mLevelCompleteRect)
+			self.mKernel.DisplaySurface().blit(self.mMainMenuImage, self.mMainMenuRect)
+
+			if (self.mHighScores[self.mLevelName]  == self.mPerson.mScore):
+				self.mKernel.DisplaySurface().blit(self.mHighScoreImage, self.mHighScoreRect)
+
+			if (self.mNextLevelName != ""):
+				self.mKernel.DisplaySurface().blit(self.mNextLevelImage, self.mNextLevelRect)
+
 		self.mPreviousDead = self.mPerson.mDead
 		self.mPreviousPop = self.mBalloon.mPopped
 		
@@ -215,4 +249,8 @@ class GS_Game(GameState):
 			if self.mPerson.mScore > self.mHighScores[self.mLevelName]:
 				self.mHighScores[self.mLevelName] = self.mPerson.mScore
 		else:
-			self.mHighScores.append[self.mLevelName : self.mPerson.mScore]
+			self.mHighScores[self.mLevelName] = self.mPerson.mScore
+
+		with open(os.path.join("data", "highscores.txt"), 'w') as file:
+			for level in self.mHighScores:
+				file.write(level + " " + str(self.mHighScores[level]) + "\n")

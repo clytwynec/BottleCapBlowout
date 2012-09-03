@@ -10,6 +10,7 @@ class Person(Entity):
 		self.mJumpImage2, self.mJumpRect2 = self.mKernel.ImageManager().LoadImage("player_jump2.bmp")
 		self.mDeadImage, deadRect = self.mKernel.ImageManager().LoadImage("player_dead.bmp")
 		self.mBlowImage, deadRect = self.mKernel.ImageManager().LoadImage("player_blow.bmp")
+		self.mFinishedImage, deadRect = self.mKernel.ImageManager().LoadImage("player_done.bmp")
 
 		self.mBlowingSound = self.mKernel.SoundManager().LoadSound("BlowUpBalloon.wav")
 		self.mBlowingSound.set_volume(0.1)
@@ -111,6 +112,12 @@ class Person(Entity):
 			self.mFrameWidth = 128
 			self.mFrameRect = pygame.Rect(0, 0, 128, 128)
 			self.mAnimationSpeed = 4
+
+	def Done(self):
+		self.mImage = self.mFinishedImage
+		self.mFrameWidth = 0
+		self.mFrameRect = None #pygame.Rect(0, 0, 128, 128)
+		self.mFrameWidth = 0
 
 	def SyncCollisionRect(self):
 		self.mCollisionRect.left = self.mPosition[0] + 10

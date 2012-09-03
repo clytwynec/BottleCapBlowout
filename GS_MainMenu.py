@@ -33,6 +33,10 @@ class GS_MainMenu(GS_MenuBase):
 		self.mMenuRects["EditorMenu"].topleft = (780 - self.mMenuRects["EditorMenu"].width, 550)
 		self.mMenuItems["EditorMenu"] = self.mMenuImages["EditorMenu"]
 
+		self.mMenuImages["HighScores"], self.mMenuRects["HighScores"] = self.mKernel.ImageManager().LoadImage("highscore_small.bmp")
+		self.mMenuRects["HighScores"].topleft = (20, 550)
+		self.mMenuItems["HighScores"] = self.mMenuImages["HighScores"]
+
 		self.mMenuImages["Exit"], self.mMenuRects["Exit"] = self.mKernel.ImageManager().LoadImage("exit.bmp")
 		self.mMenuRects["Exit"].topleft = (400 - self.mMenuRects["Exit"].width / 2, startHeight + offset * count)
 		self.mMenuItems["Exit"] = self.mMenuImages["Exit"]
