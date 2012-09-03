@@ -20,6 +20,8 @@ class GS_MenuBase(GameState):
 		self.mMenuRects = {}
 
 	def Initialize(self):
+		if (len(self.mMenuItems.keys()) == 0):
+			self.mMenuItems = self.mMenuImages
 
 		return GameState.Initialize(self)
 
