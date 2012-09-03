@@ -25,6 +25,7 @@ from GS_MainMenu import *
 from GS_EditorMenu import *
 from GS_Game import *
 from GS_LevelSelect import *
+from GS_Tutorial import *
 from HighScores import *
 
 #random.seed(0)
@@ -40,8 +41,6 @@ optionParser.add_option("-e", "--editlevel", help="Edit the level with a specifi
 optionParser.add_option("-l", "--levellength", help="When editing a level, this is the length of the level")
 (options, args) = optionParser.parse_args()
 
-print options.editlevel
-
 #### Kick off the graphics/window system
 kernel = GameKernel()
 screenSurface = kernel.InitializeDisplay((800, 600))
@@ -54,6 +53,7 @@ gsm.RegisterState(GS_EditorMenu(kernel, gsm))
 gsm.RegisterState(GS_Game(kernel, gsm))
 gsm.RegisterState(HighScores(kernel, gsm))
 gsm.RegisterState(GS_LevelSelect(kernel, gsm))
+gsm.RegisterState(GS_Tutorial(kernel, gsm))
 
 if (options.editlevel):
 	gsm.RegisterState(GS_Editor(kernel, gsm, options.editlevel))
