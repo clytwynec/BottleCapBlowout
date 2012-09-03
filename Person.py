@@ -62,7 +62,7 @@ class Person(Entity):
 
 					self.mVelocity[1] = 0
 					self.mGravity = 0
-					self.mPosition[1] -= self.mCollisionRect.bottom - other.Rect().top - 1
+					self.mPosition[1] -= self.mCollisionRect.bottom - other.CollisionRect().top - 1
 				elif (self.mCollisionRect.right - other.CollisionRect().left > 0):
 					self.mStopped = True
 

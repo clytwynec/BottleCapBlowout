@@ -19,9 +19,9 @@ class GS_MainMenu(GS_MenuBase):
 		self.mHeading, self.mHeadingRect = self.mKernel.ImageManager().LoadImage("heading.bmp")
 		self.mHeadingRect.topleft = (400 - self.mHeadingRect.width / 2, 50)
 
-		self.mMenuImages["NewGame"], self.mMenuRects["NewGame"] = self.mKernel.ImageManager().LoadImage("newgame.bmp")
-		self.mMenuRects["NewGame"].topleft = (400 - self.mMenuRects["NewGame"].width / 2, startHeight + offset * count)
-		self.mMenuItems["NewGame"] = self.mMenuImages["NewGame"]
+		self.mMenuImages["LevelSelect"], self.mMenuRects["LevelSelect"] = self.mKernel.ImageManager().LoadImage("newgame.bmp")
+		self.mMenuRects["LevelSelect"].topleft = (400 - self.mMenuRects["LevelSelect"].width / 2, startHeight + offset * count)
+		self.mMenuItems["LevelSelect"] = self.mMenuImages["LevelSelect"]
 		count += 1
 
 		self.mMenuImages["Tutorial"], self.mMenuRects["Tutorial"] = self.mKernel.ImageManager().LoadImage("tutorial.bmp")
@@ -54,11 +54,11 @@ class GS_MainMenu(GS_MenuBase):
 
 
 	def HandleEvent(self, event):
-		if (event.type == MOUSEBUTTONDOWN):
-			if (self.mMenuRects["NewGame"].collidepoint(event.pos)):
-				self.mGameStateManager.GetState("Game").Destroy()
-				self.mGameStateManager.SwitchState("Game")
-				return
+	# 	if (event.type == MOUSEBUTTONDOWN):
+	# 		if (self.mMenuRects["NewGame"].collidepoint(event.pos)):
+	# 			self.mGameStateManager.GetState("Game").Destroy()
+	# 			self.mGameStateManager.SwitchState("Game")
+	# 			return
 
 		return GS_MenuBase.HandleEvent(self, event)
 

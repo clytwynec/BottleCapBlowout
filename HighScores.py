@@ -8,12 +8,14 @@ class HighScores(GS_MenuBase):
 	def Initialize(self):
 		GS_MenuBase.Initialize(self)
 		self.mHighScores = {}
+
+		self.LoadScores()
+
 		self.mMenuImages["MainMenu"], self.mMenuRects["MainMenu"] = self.mKernel.ImageManager().LoadImage("mainmenu.bmp")
 		self.mMenuRects["MainMenu"].topleft = (780 - self.mMenuRects["MainMenu"].width, 500)
 
-
 	def LoadScores(self):
-		HighScoreFile = os.path.join("data", highscores.txt)
+		HighScoreFile = os.path.join("data", "highscores.txt")
 		with open(HighScoreFile) as highscores:
 				scoreList = highscores.read().splitlines() 
 

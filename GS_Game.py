@@ -51,11 +51,16 @@ class GS_Game(GameState):
 
 		self.mNextLevelName = ""
 
-	def Initialize(self):
-		if (self.mNextLevelName):
+	def Initialize(self, levelName = ""):
+		print levelName
+		if (levelName):
+			self.LoadLevel(levelName[0:-4])
+		elif (self.mNextLevelName):
 			self.LoadLevel(self.mNextLevelName)
 		else:
 			self.LoadLevel("Level1")
+
+		self.LoadScores()
 
 		self.mLevelComplete = False
 
@@ -74,6 +79,7 @@ class GS_Game(GameState):
 			self.mNextLevelName = "Level" + str(self.mCurrentLevel + 1)
 			self.mMainMenuRect.topleft = (200 - self.mMainMenuRect.width / 2, 350)
 		else:
+			self.mNextLevelName = ""
 			self.mMainMenuRect.topleft = (400 - self.mMainMenuRect.width / 2, 350)
 
 		return GameState.Initialize(self)
@@ -107,11 +113,13 @@ class GS_Game(GameState):
 
 	def Destroy(self):
 		self.mMusic.stop()
-
+		self.mNextLevelName = ""
 		return GameState.Destroy(self)
 
 	def Pause(self):
 		self.mMusic.stop()
+		self.SaveScore()
+
 		return GameState.Pause(self)
 
 	def Unpause(self):
@@ -257,3 +265,13 @@ class GS_Game(GameState):
 		with open(os.path.join("data", "highscores.txt"), 'w') as file:
 			for level in self.mHighScores:
 				file.write(level + " " + str(self.mHighScores[level]) + "\n")
+
+	def LoadScores(self):
+		HighScoreFile = os.path.join("data", "highscores.txt")
+		with open(HighScoreFile) as highscores:
+				scoreList = highscores.read().splitlines() 
+
+				for i in range(0, len(scoreList)):
+					parts = scoreList[i].split()
+
+					self.mHighScores[parts[0]] = int(parts[1])
