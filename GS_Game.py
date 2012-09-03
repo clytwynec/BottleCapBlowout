@@ -29,7 +29,6 @@ class GS_Game(GameState):
 		self.mLevelComplete = False
 		self.mSoundState = 1
 
-
 		self.mMusic = self.mKernel.SoundManager().LoadSound("BGmusic_flyaway.wav")
 
 		self.mGameOverImage, self.mGameOverRect = self.mKernel.ImageManager().LoadImage("gameover.bmp")
@@ -52,11 +51,20 @@ class GS_Game(GameState):
 
 		self.mNextLevelName = ""
 
-	def Initialize(self):
-		if (self.mNextLevelName):
+	def Initialize(self, levelName = ""):
+		self.mHighScores = {}
+		self.mScore = 0
+		self.mPaused = 0
+
+		if (levelName):
+			self.LoadLevel(levelName)
+			self.mCurrentLevel = int(levelName[5])
+		elif (self.mNextLevelName):
 			self.LoadLevel(self.mNextLevelName)
 		else:
 			self.LoadLevel("Level1")
+
+		self.LoadScores()
 
 		self.mLevelComplete = False
 
@@ -68,13 +76,14 @@ class GS_Game(GameState):
 
 		self.mMusic.set_volume(.3 * self.mSoundState)
 		self.mMusic.play(-1)
-		
+
 
 		fullLevelName = os.path.join("data", "levels", "Level" + str(self.mCurrentLevel + 1) + ".lvl")
 		if os.path.isfile(fullLevelName):
 			self.mNextLevelName = "Level" + str(self.mCurrentLevel + 1)
 			self.mMainMenuRect.topleft = (200 - self.mMainMenuRect.width / 2, 350)
 		else:
+			self.mNextLevelName = ""
 			self.mMainMenuRect.topleft = (400 - self.mMainMenuRect.width / 2, 350)
 
 		return GameState.Initialize(self)
@@ -108,11 +117,14 @@ class GS_Game(GameState):
 
 	def Destroy(self):
 		self.mMusic.stop()
-
+		self.mNextLevelName = ""
+		self.mCurrentLevel = 1
 		return GameState.Destroy(self)
 
 	def Pause(self):
 		self.mMusic.stop()
+		self.SaveScore()
+
 		return GameState.Pause(self)
 
 	def Unpause(self):
@@ -156,7 +168,6 @@ class GS_Game(GameState):
 				self.mGameStateManager.SwitchState("MainMenu")
 			elif (self.mNextLevelRect.collidepoint(event.pos)):
 				self.mCurrentLevel += 1
-				self.Destroy()
 				self.Initialize()
 
 		return GameState.HandleEvent(self, event)
@@ -261,3 +272,13 @@ class GS_Game(GameState):
 		with open(os.path.join("data", "highscores.txt"), 'w') as file:
 			for level in self.mHighScores:
 				file.write(level + " " + str(self.mHighScores[level]) + "\n")
+
+	def LoadScores(self):
+		HighScoreFile = os.path.join("data", "highscores.txt")
+		with open(HighScoreFile) as highscores:
+				scoreList = highscores.read().splitlines() 
+
+				for i in range(0, len(scoreList)):
+					parts = scoreList[i].split()
+
+					self.mHighScores[parts[0]] = int(parts[1])

@@ -7,11 +7,15 @@ class HighScores(GS_MenuBase):
 
 	def Initialize(self):
 		GS_MenuBase.Initialize(self)
+
 		self.mHighScores = []
 		self.LoadScores()
+
 		self.mMenuImages["MainMenu"], self.mMenuRects["MainMenu"] = self.mKernel.ImageManager().LoadImage("mainmenu_small.bmp")
 		self.mMenuRects["MainMenu"].topleft = (780 - self.mMenuRects["MainMenu"].width, 500)
+
 		self.mFont = pygame.font.SysFont("Helvetica", 20, True)
+
 
 	def LoadScores(self):
 		HighScoreFile = os.path.join("data", "highscores.txt")

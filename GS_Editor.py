@@ -37,6 +37,8 @@ class GS_Editor(GameState):
 
 		self.mGroundLevel = 570
 
+		self.mScrollDirection = 0
+
 		self.mFont = pygame.font.SysFont("Helvetica", 16, True)
 
 	def Initialize(self):
@@ -131,19 +133,24 @@ class GS_Editor(GameState):
 
 		elif (event.type == KEYDOWN):
 			if (event.key == K_a):
-				self.mLevel.Scroll(-16)
+				self.mScrollDirection = -4
 			elif (event.key == K_d):
-				self.mLevel.Scroll(16)
+				self.mScrollDirection = 4
 			elif (event.key == K_BACKSPACE and self.mCurrentEntity):
 				self.mLevel.RemoveEntity(self.mCurrentEntity)
 				self.mCurrentEntity = None
 				self.mLevel.CalcMaxScore()
+
+		elif (event.type == KEYUP):
+			if (event.key == K_a or event.key == K_d):
+				self.mScrollDirection = 0
 
 		return GameState.HandleEvent(self, event)
 
 	def Update(self, delta):
 		# Don't animate things
 		#self.mLevel.Update(delta)
+		self.mLevel.Scroll(self.mScrollDirection)
 
 		self.mLevel.Draw()
 
