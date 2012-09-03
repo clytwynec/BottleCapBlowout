@@ -80,6 +80,7 @@ class GS_Game(GameState):
 		self.mPerson.mSoundState = self.mSoundState
 
 		self.mMusic.set_volume(.3 * self.mSoundState)
+		self.mMusic.stop()
 		self.mMusic.play(-1)
 
 
