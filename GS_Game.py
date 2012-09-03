@@ -29,6 +29,7 @@ class GS_Game(GameState):
 		self.mLevelComplete = False
 		self.mSoundState = 1
 
+
 		self.mMusic = self.mKernel.SoundManager().LoadSound("BGmusic_flyaway.wav")
 
 		self.mGameOverImage, self.mGameOverRect = self.mKernel.ImageManager().LoadImage("gameover.bmp")
@@ -214,7 +215,7 @@ class GS_Game(GameState):
 
 		self.mLevel.Blit()
 
-		textSurface = self.mFont.render( str(self.mLevelName), True, Colors.WHITE)
+		textSurface = self.mFont.render( str(self.mLevelName)[0:-4], True, Colors.WHITE)
 		self.mKernel.DisplaySurface().blit(textSurface, (30, 580, textSurface.get_rect().width, textSurface.get_rect().height))
 		
 		textSurface = self.mFont.render("Score: " + str(self.mPerson.mScore), True, Colors.WHITE)
@@ -225,6 +226,9 @@ class GS_Game(GameState):
 
 		textSurface = self.mFont.render("In Basket: " + str(self.mBalloon.mValue), True, Colors.WHITE)
 		self.mKernel.DisplaySurface().blit(textSurface, (390, 580, textSurface.get_rect().width, textSurface.get_rect().height))
+
+		textSurface = self.mFont.render("Points Possible: " + str(self.mLevel.mMaxScore), True, Colors.WHITE)
+		self.mKernel.DisplaySurface().blit(textSurface, (540, 580, textSurface.get_rect().width, textSurface.get_rect().height))
 		
 		if (self.mPerson.mLives == 0):
 			self.mKernel.DisplaySurface().blit(self.mGameOverImage, self.mGameOverRect)
