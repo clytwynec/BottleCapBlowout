@@ -73,6 +73,8 @@ class GS_Game(GameState):
 		if os.path.isfile(fullLevelName):
 			self.mNextLevelName = "Level" + str(self.mCurrentLevel + 1)
 			self.mMainMenuRect.topleft = (200 - self.mMainMenuRect.width / 2, 350)
+		else:
+			self.mMainMenuRect.topleft = (400 - self.mMainMenuRect.width / 2, 350)
 
 		return GameState.Initialize(self)
 
@@ -195,7 +197,6 @@ class GS_Game(GameState):
 				if (self.mBalloon.mPosition[0] < self.mLevel.mCameraX):
 					if (self.mPerson.mLives > 0):
 						self.SpawnBalloon()
-						self.mPerson.BlowBalloon()
 
 			if (self.mPerson.mResetting):
 				self.SpawnBalloon()
@@ -227,6 +228,8 @@ class GS_Game(GameState):
 		
 		if (self.mPerson.mLives == 0):
 			self.mKernel.DisplaySurface().blit(self.mGameOverImage, self.mGameOverRect)
+			
+			self.mMainMenuRect.topleft = (400 - self.mMainMenuRect.width / 2, 350)
 			self.mKernel.DisplaySurface().blit(self.mMainMenuImage, self.mMainMenuRect)
 
 		if (self.mLevelComplete):

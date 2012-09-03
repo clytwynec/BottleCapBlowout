@@ -12,8 +12,6 @@ class Person(Entity):
 		self.mBlowImage, deadRect = self.mKernel.ImageManager().LoadImage("player_blow.bmp")
 		self.mFinishedImage, deadRect = self.mKernel.ImageManager().LoadImage("player_done.bmp")
 
-		self.mBlowingSound = self.mKernel.SoundManager().LoadSound("BlowUpBalloon.wav")
-		self.mBlowingSound.set_volume(0.1)
 
 		self.mDuckHeight = 88
 		self.mStandHeight = 115
@@ -137,10 +135,6 @@ class Person(Entity):
 			self.mLives -= 1
 
 			self.Run()
-
-	def BlowBalloon(self):
-		if (self.mSoundState == 1):
-			self.mBlowingSound.play()
 
 	def Update(self, delta):
 		wasDead = self.mDead > 0
