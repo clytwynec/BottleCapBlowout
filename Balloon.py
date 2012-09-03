@@ -89,7 +89,9 @@ class Balloon(Entity):
 
  	def EmptyBasket(self):
  		if self.mValue > 0:
- 			self.mCollectSound.play()
+ 			if (self.mSoundState == 1):
+ 				self.mCollectSound.play()
+ 				
  			self.mGravity -= 5 * self.mNumCoins
  			self.mBlowStrength = 3
  			self.mNumCoins = 0
