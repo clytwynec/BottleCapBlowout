@@ -11,6 +11,7 @@ class Bee(Obstacle):
 		self.mFloatMax = 15
 		self.mFloatDistance = random.randrange(-1 * self.mFloatMax, self.mFloatMax)
 		self.mModifier = 1
+		self.mSharp = 1
 		self.mValue = 0
 		self.mDeadly = 1
 
