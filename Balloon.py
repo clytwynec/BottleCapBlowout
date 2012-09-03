@@ -14,7 +14,9 @@ class Balloon(Entity):
 		self.mSoundState = 1
 
 		self.mCollideSound = self.mKernel.SoundManager().LoadSound("BalloonPop.wav")
+		self.mCollectSound = self.mKernel.SoundManager().LoadSound("ding.wav")
 		self.mValue = 0
+		self.mNumCoins = 0
 		self.mBlown = 0  # 0 = blower off, 1 = blower on
 		self.mGravity = 15 #slope
 		self.mBlowStrength = 3
@@ -59,7 +61,7 @@ class Balloon(Entity):
 			self.BalloonPop()
 
 		if other.IsA('Person'):
-			self.mValue = 0
+			self.EmptyBasket()
 
 		return
 
@@ -78,14 +80,19 @@ class Balloon(Entity):
 
  	def UpdateBasket(self, capVal):
  		self.mValue += capVal 
+ 		self.mNumCoins += 1
  		self.mGravity += 5
- 		self.mBlowStrength -= .25
+ 		if self.mBlowStrength > .30:
+ 			self.mBlowStrength -= .15
  		return
 
  	def EmptyBasket(self):
- 		self.mGravity -= 0.5 * self.mValue
- 		self.mValue = 0
- 		self.mBlowStrength = 20
+ 		if self.mValue > 0:
+ 			self.mCollectSound.play()
+ 			self.mGravity -= 5 * self.mNumCoins
+ 			self.mBlowStrength = 3
+ 			self.mNumCoins = 0
+ 			self.mValue = 0
 
 
  	def Update(self, delta):

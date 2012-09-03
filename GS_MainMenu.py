@@ -11,6 +11,7 @@ class GS_MainMenu(GS_MenuBase):
 		self.mLevel = Level(self.mKernel, 800)
 		self.mLevel.LoadLevel("MainMenu.lvl")
 
+
 		startHeight = 300
 		offset = 75
 		count = 0

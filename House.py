@@ -7,7 +7,7 @@ class House(Entity):
 		self.mBackImage, backRect = self.mKernel.ImageManager().LoadImage("house_back.bmp")
 		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("house_front.bmp")
 
-		self.mCollisionRect = pygame.Rect(0, 0, 64, 64)
+		self.mCollisionRect = pygame.Rect(0, 0, 64, 600)
 
 	def Update(self, delta):
 		self.SyncCollisionRect()
@@ -15,7 +15,7 @@ class House(Entity):
 		return Entity.Update(self, delta)
 
 	def SyncCollisionRect(self):
-		self.mCollisionRect.topleft = (self.mPosition[0] + 380, self.mPosition[1] + 400)
+		self.mCollisionRect.topleft = (self.mPosition[0] + 380, 0)
 
 
 	def DrawBack(self):

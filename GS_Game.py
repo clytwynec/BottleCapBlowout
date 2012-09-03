@@ -104,6 +104,7 @@ class GS_Game(GameState):
 					entity.mSoundState = (entity.mSoundState +1) % 2
 				self.mBalloon.mSoundState = (self.mBalloon.mSoundState +1) % 2
 				self.mSoundState = (self.mSoundState +1) % 2
+				self.mMusic.set_volume(.3*self.mSoundState)
 
 
 		elif(event.type == KEYUP):
@@ -118,7 +119,7 @@ class GS_Game(GameState):
 		if self.mPerson.CheckCollision(self.mHouse):
 			self.mLevelComplete = True
 
-		if self.mLevel.mCameraX > (self.mLevel.mLevelLength - 900):
+		if self.mLevel.mCameraX > (self.mLevel.mLevelLength - 1500):
 			self.mBalloon.mBlown = 0
 
 		if not self.mLevelComplete and self.mPaused == 0:
@@ -147,7 +148,6 @@ class GS_Game(GameState):
 				self.mPerson.mResetting = False
 			
 		self.mLevel.Draw()
-		self.mBalloon.Draw()
 
 		self.mHouse.DrawBack()
 
@@ -155,6 +155,7 @@ class GS_Game(GameState):
 		self.mLevel.DisplaySurface().blit(self.mCordImage, self.mCordRect)
 		self.mPerson.Draw()
 		self.mHouse.Draw()
+		self.mBalloon.Draw()
 
 		self.mLevel.Blit()
 
