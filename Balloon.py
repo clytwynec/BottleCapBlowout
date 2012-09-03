@@ -14,7 +14,8 @@ class Balloon(Entity):
 		self.mSoundState = 1
 
 		self.mCollideSound = self.mKernel.SoundManager().LoadSound("BalloonPop.wav")
-		self.mCollectSound = self.mKernel.SoundManager().LoadSound("ding.wav")
+		self.mCollectSound = self.mKernel.SoundManager().LoadSound("ding2.wav")
+		self.mCollectSound.set_volume(.3)
 		self.mValue = 0
 		self.mNumCoins = 0
 		self.mBlown = 0  # 0 = blower off, 1 = blower on
