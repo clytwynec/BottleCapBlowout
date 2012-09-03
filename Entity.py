@@ -4,6 +4,7 @@ class Entity:
 		self.mLevel = level
 		self.mSoundState = 1
 
+		self.mSharp = 0
 		self.mSolid = 0
 		self.mPosition = [0, 0]
 

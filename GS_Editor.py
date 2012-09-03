@@ -163,7 +163,9 @@ class GS_Editor(GameState):
 			self.mGhostEntity.Draw()
 			pygame.draw.rect(self.mKernel.DisplaySurface(), Colors.RED, self.mGhostEntity.Rect(), 2)
 
+		print self.mLevel.mLevelLength
 		pygame.draw.line(self.mKernel.DisplaySurface(), Colors.BLUE, (0, self.mGroundLevel), (800, self.mGroundLevel), 4)
+		pygame.draw.line(self.mKernel.DisplaySurface(), Colors.BLUE, (self.mLevel.mLevelLength - 1500, 0), (self.mLevel.mLevelLength - 1500, 600), 4)
 
 		pygame.draw.rect(self.mKernel.DisplaySurface(), Colors.LIGHT_GREY, self.mEntityBox)
 
@@ -179,7 +181,5 @@ class GS_Editor(GameState):
 
 		textSurface = self.mFont.render("Max Score: " + str(self.mLevel.mMaxScore), True, Colors.WHITE)
 		self.mKernel.DisplaySurface().blit(textSurface, (40, 580, textSurface.get_rect().width, textSurface.get_rect().height))
-
-		pygame.draw.line(self.mKernel.DisplaySurface(), Colors.BLUE, (self.mLevel.mLevelLength - 1500, 0), (self.mLevel.mLevelLength - 1500, 600), 4)
 
 		return GameState.Update(self, delta)

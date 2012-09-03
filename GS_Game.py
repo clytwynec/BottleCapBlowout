@@ -197,12 +197,12 @@ class GS_Game(GameState):
 			if (self.mPerson.mDead == 0):# and self.mPerson.mLives > 0):
 				self.mBalloon.Update(delta)
 
-			self.mLevel.CheckCollisions(self.mPerson)
-			self.mLevel.CheckCollisions(self.mBalloon)
-
 			if (self.mPerson.CheckCollision(self.mBalloon) and self.mBalloon.CheckCollision(self.mPerson)):
 				self.mPerson.OnCollision(self.mBalloon)
 				self.mBalloon.OnCollision(self.mPerson)
+
+			self.mLevel.CheckCollisions(self.mPerson)
+			self.mLevel.CheckCollisions(self.mBalloon)
 					
 
 			if (self.mBalloon.mPopped):
