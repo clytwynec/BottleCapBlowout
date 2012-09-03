@@ -68,7 +68,7 @@ class Level:
 	##############################################
 	def LoadLevel(self, levelName):
 		self.mLevelName = levelName
-		self.mLevelLength = 2048
+		self.mLevelLength = 6000
 
 		fullLevelName = os.path.join("data", "levels", levelName)
 
