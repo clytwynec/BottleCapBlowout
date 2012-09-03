@@ -23,16 +23,18 @@ class HighScores(GS_MenuBase):
 
 	def LoadScores(self):
 		HighScoreFile = os.path.join("data", "highscores.txt")
-		with open(HighScoreFile) as highscores:
-				scoreList = highscores.read().splitlines() 
+		
+		if (os.path.isfile(HighScoreFile)):
+			with open(HighScoreFile) as highscores:
+					scoreList = highscores.read().splitlines() 
 
-				for i in range(0, len(scoreList)):
-					LevelScores = scoreList[i].split()
+					for i in range(0, len(scoreList)):
+						LevelScores = scoreList[i].split()
 
-					self.mHighScores.append({ 
-						"Level" : LevelScores[0], 
-						"Score" : str(LevelScores[1])  
-					}) 
+						self.mHighScores.append({ 
+							"Level" : LevelScores[0], 
+							"Score" : str(LevelScores[1])  
+						}) 
 
 	def HandleEvent(self, event):
 

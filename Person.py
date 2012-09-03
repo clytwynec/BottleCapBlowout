@@ -31,7 +31,7 @@ class Person(Entity):
 		self.mJumpCount = 0
 		self.mPause = 0
 
-		self.mLives = 3
+		self.mLives = 5
 
 		self.mFrameRect = pygame.Rect(0, 0, 128, 128)
 		self.mFrameWidth = 128

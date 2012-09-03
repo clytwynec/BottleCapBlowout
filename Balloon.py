@@ -106,6 +106,7 @@ class Balloon(Entity):
 	 				self.mBlowChannel.stop()
 	 				self.mBlowChannel = None
 	 				if self.mSoundState == 1:
+	 					self.mBlowEndSound.stop()
 	 					self.mBlowEndSound.play()
 
 				self.mVelocity[0] = -1 * float(self.mGravity) / delta

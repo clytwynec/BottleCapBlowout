@@ -238,7 +238,7 @@ class Level:
 	# itself
 	##############################################	
 	def Draw(self):
-		self.mLevelSurface.fill(Colors.BLACK)
+		#self.mLevelSurface.fill(Colors.BLACK)
 		for layer in range(len(self.mBackgroundImages) - 1, -1, -1):
 			self.DrawBackgroundLayer(layer)
 
