@@ -54,6 +54,9 @@ class GS_EditorMenu(GS_MenuBase):
 
 		GS_MenuBase.HandleEvent(self, event)
 
+	def Pause(self):
+		self.Destroy()
+
 	def Update(self, delta):
 
 		GS_MenuBase.Update(self, delta)
