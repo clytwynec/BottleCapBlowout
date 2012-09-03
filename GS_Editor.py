@@ -37,6 +37,7 @@ class GS_Editor(GameState):
 
 		self.mGroundLevel = 570
 
+		self.mFont = pygame.font.SysFont("Helvetica", 16, True)
 
 	def Initialize(self):
 		self.mLevel.LoadLevel(self.mLevelName)
@@ -104,6 +105,7 @@ class GS_Editor(GameState):
 
 					newEntity = _Entity(self.mKernel, self.mLevel)
 					self.mLevel.AddEntity(newEntity, self.mLevel.ScreenToLevelCoordinates(event.pos))
+					self.mLevel.CalcMaxScore()
 
 				elif (self.mCurrentEntity):
 					self.mCurrentEntity.SetPosition(list(self.mLevel.ScreenToLevelCoordinates(event.pos)))
@@ -135,6 +137,7 @@ class GS_Editor(GameState):
 			elif (event.key == K_BACKSPACE and self.mCurrentEntity):
 				self.mLevel.RemoveEntity(self.mCurrentEntity)
 				self.mCurrentEntity = None
+				self.mLevel.CalcMaxScore()
 
 		return GameState.HandleEvent(self, event)
 
@@ -167,5 +170,8 @@ class GS_Editor(GameState):
 
 		self.mKernel.DisplaySurface().blit(self.mMainMenuImage, self.mMainMenuRect)
 		self.mKernel.DisplaySurface().blit(self.mSaveLevelImage, self.mSaveLevelRect)
+
+		textSurface = self.mFont.render("Max Score: " + str(self.mLevel.mMaxScore), True, Colors.WHITE)
+		self.mKernel.DisplaySurface().blit(textSurface, (40, 580, textSurface.get_rect().width, textSurface.get_rect().height))
 
 		return GameState.Update(self, delta)

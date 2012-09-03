@@ -9,7 +9,7 @@ class Hive(Obstacle):
 		#self.mCollideSound =
 		self.mSolid = 1
 		self.mTime = 0
-		self.mValue = -15
+		self.mValue = 0
 
 		self.mFrameRect = pygame.Rect(0, 0, 128, 320)
 		self.mAnimationSpeed = 10

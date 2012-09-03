@@ -23,6 +23,8 @@ class Level:
 
 		self.mScreenSize = screenSize
 
+		self.mMaxScore = 0
+
 		self.mLevelHeight = 768
 
 		self.mBackgroundImages = []
@@ -87,6 +89,7 @@ class Level:
 					}) 
 
 		self.ProcessEntities()
+		self.CalcMaxScore()
 		return
 
 	##############################################
@@ -248,3 +251,10 @@ class Level:
 	def Blit(self):		
 		self.mKernel.DisplaySurface().blit(self.mLevelSurface, self.mKernel.DisplaySurface().get_rect(), pygame.Rect(self.mCameraX, 0, 1024, self.mLevelHeight))
 
+
+	def CalcMaxScore(self):
+		self.mMaxScore = 0
+		for entity in self.mEntities:
+			if entity.mValue > 0:
+				self.mMaxScore += entity.mValue
+		return self.mMaxScore

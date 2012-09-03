@@ -31,6 +31,8 @@ class GS_Game(GameState):
 		self.mMusic = self.mKernel.SoundManager().LoadSound("BGmusic_flyaway.wav")
 		self.mMusic.set_volume(.3)
 
+		self.mFont = pygame.font.SysFont("Helvetica", 16, True)
+
 	def Initialize(self):
 		self.LoadLevel("Level1")
 
@@ -165,6 +167,19 @@ class GS_Game(GameState):
 
 		self.mLevel.Blit()
 
+		textSurface = self.mFont.render( str(self.mLevelName), True, Colors.WHITE)
+		self.mKernel.DisplaySurface().blit(textSurface, (30, 580, textSurface.get_rect().width, textSurface.get_rect().height))
+		
+		textSurface = self.mFont.render("Score: " + str(self.mPerson.mScore), True, Colors.WHITE)
+		self.mKernel.DisplaySurface().blit(textSurface, (150, 580, textSurface.get_rect().width, textSurface.get_rect().height))
+		
+		textSurface = self.mFont.render("Lives: " + str(self.mLives), True, Colors.WHITE)
+		self.mKernel.DisplaySurface().blit(textSurface, (270, 580, textSurface.get_rect().width, textSurface.get_rect().height))
+
+		textSurface = self.mFont.render("In Basket: " + str(self.mBalloon.mValue), True, Colors.WHITE)
+		self.mKernel.DisplaySurface().blit(textSurface, (390, 580, textSurface.get_rect().width, textSurface.get_rect().height))
+		
+		
 		return GameState.Update(self, delta)
 
 	def SaveScore(self):
