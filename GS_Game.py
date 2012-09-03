@@ -55,6 +55,7 @@ class GS_Game(GameState):
 		print levelName
 		if (levelName):
 			self.LoadLevel(levelName[0:-4])
+			self.mCurrentLevel = levelName[5]
 		elif (self.mNextLevelName):
 			self.LoadLevel(self.mNextLevelName)
 		else:
