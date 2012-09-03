@@ -29,7 +29,6 @@ class GS_Game(GameState):
 		self.mLevelComplete = False
 		self.mSoundState = 1
 		self.mMusic = self.mKernel.SoundManager().LoadSound("BGmusic_flyaway.wav")
-		self.mMusic.set_volume(.3)
 
 	def Initialize(self):
 		self.LoadLevel("Level1")
@@ -38,6 +37,13 @@ class GS_Game(GameState):
 		self.mCurrentLevel = 1
 		self.mLevelComplete = False
 
+		for entity in self.mLevel.mEntities:
+			entity.mSoundState = self.mSoundState
+
+		self.mBalloon.mSoundState = self.mSoundState
+		self.mPerson.mSoundState = self.mSoundState
+
+		self.mMusic.set_volume(.3 * self.mSoundState)
 		self.mMusic.play(-1)
 		
 		return GameState.Initialize(self)
@@ -66,7 +72,7 @@ class GS_Game(GameState):
 
 	def SpawnBalloon(self):
 		self.mBalloon = Balloon(self.mKernel, self.mLevel)
-		self.mBalloon.SetPosition([ self.mPerson.Rect().right, self.mGroundLevel - self.mBalloon.Rect().height - 128 ])
+		self.mBalloon.SetPosition([ self.mLevel.mCameraX + self.mPerson.mScreenOffset + 128, self.mGroundLevel - self.mBalloon.Rect().height - 128 ])
 		self.mBalloon.mGroundLevel = 500
 
 	def Destroy(self):
@@ -80,8 +86,6 @@ class GS_Game(GameState):
 	def Unpause(self):
 		self.mMusic.play(-1)
 		return GameState.Unpause(self)
-
-
 
 
 	def HandleEvent(self, event):
@@ -143,11 +147,9 @@ class GS_Game(GameState):
 					
 
 			if (self.mBalloon.mPopped):
-				self.mPerson.BlowBalloon()
 				if (self.mBalloon.mPosition[0] < self.mLevel.mCameraX and self.mLives > 0):
 					self.SpawnBalloon()
-					self.mPerson.mBlowing = False
-					self.mPerson.Run()
+					self.mPerson.BlowBalloon()
 
 			if (self.mPerson.mResetting):
 				self.SpawnBalloon()
