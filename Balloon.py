@@ -40,9 +40,9 @@ class Balloon(Entity):
 		self.mBlowEndSound = self.mKernel.SoundManager().LoadSound("hairdryer_off.wav")
 		self.mBlowSound = self.mKernel.SoundManager().LoadSound("hairdryer.wav")
 
-		self.mBlowStartSound.set_volume(0.05)
-		self.mBlowEndSound.set_volume(0.05)
-		self.mBlowSound.set_volume(0.05)
+		self.mBlowStartSound.set_volume(0.08)
+		self.mBlowEndSound.set_volume(0.08)
+		self.mBlowSound.set_volume(0.08)
 
 		self.mBlowChannel = None
 
