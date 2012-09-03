@@ -103,6 +103,7 @@ class GS_Game(GameState):
 				for entity in self.mLevel.mEntities:
 					entity.mSoundState = (entity.mSoundState +1) % 2
 				self.mBalloon.mSoundState = (self.mBalloon.mSoundState +1) % 2
+				self.mPerson.mSoundState = (self.mBalloon.mSoundState + 1) % 2
 				self.mSoundState = (self.mSoundState +1) % 2
 				self.mMusic.set_volume(.3*self.mSoundState)
 
@@ -140,8 +141,13 @@ class GS_Game(GameState):
 				self.mPerson.OnCollision(self.mBalloon)
 				self.mBalloon.OnCollision(self.mPerson)
 					
-			if (self.mBalloon.mPopped and self.mBalloon.mPosition[0] < self.mLevel.mCameraX and self.mLives > 0):
-				self.SpawnBalloon()
+
+			if (self.mBalloon.mPopped):
+				self.mPerson.BlowBalloon()
+				if (self.mBalloon.mPosition[0] < self.mLevel.mCameraX and self.mLives > 0):
+					self.SpawnBalloon()
+					self.mPerson.mBlowing = False
+					self.mPerson.Run()
 
 			if (self.mPerson.mResetting):
 				self.SpawnBalloon()

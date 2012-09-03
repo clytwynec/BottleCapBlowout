@@ -9,6 +9,10 @@ class Person(Entity):
 		self.mJumpImage1, self.mJumpRect1 = self.mKernel.ImageManager().LoadImage("player_jump1.bmp")
 		self.mJumpImage2, self.mJumpRect2 = self.mKernel.ImageManager().LoadImage("player_jump2.bmp")
 		self.mDeadImage, deadRect = self.mKernel.ImageManager().LoadImage("player_dead.bmp")
+		self.mBlowImage, deadRect = self.mKernel.ImageManager().LoadImage("player_blow.bmp")
+
+		self.mBlowingSound = self.mKernel.SoundManager().LoadSound("BlowUpBalloon.wav")
+		self.mBlowingSound.set_volume(0.3)
 
 		self.mDuckHeight = 88
 		self.mStandHeight = 115
@@ -35,6 +39,7 @@ class Person(Entity):
 		self.mResetting = False
 		self.mStopped = False
 		self.mDead = 0
+		self.mBlowing = False
 
 	def OnCollision(self, other):
 		if other.IsA('Collectable'):
@@ -90,18 +95,20 @@ class Person(Entity):
 			self.mFrameRect = None
 
 	def Duck(self):
-		self.mImage = self.mDuckImage
+		if (self.mJumpCount == 0 and self.mDead == 0):
+			self.mImage = self.mDuckImage
 
-		self.mCollisionRect.height = self.mDuckHeight
+			self.mCollisionRect.height = self.mDuckHeight
 
-		self.mFrameRect = pygame.Rect(0, 0, 128, 128)
-		self.mFrameWidth = 128
+			self.mFrameRect = pygame.Rect(0, 0, 128, 128)
+			self.mFrameWidth = 128
 
 	def Run(self):
-		self.mImage = self.mRunImage
-		self.mCollisionRect.height = self.mStandHeight
-		self.mFrameWidth = 128
-		self.mFrameRect = pygame.Rect(0, 0, 128, 128)
+		if (not self.mBlowing and self.mJumpCount == 0 and self.mDead == 0):
+			self.mImage = self.mRunImage
+			self.mCollisionRect.height = self.mStandHeight
+			self.mFrameWidth = 128
+			self.mFrameRect = pygame.Rect(0, 0, 128, 128)
 
 	def SyncCollisionRect(self):
 		self.mCollisionRect.left = self.mPosition[0] + 10
@@ -116,7 +123,17 @@ class Person(Entity):
 		self.mFrameRect = pygame.Rect(0, 0, 128, 128)
 		self.mVelocity[1] = 0
 		self.mResetting = True
+		self.mBlowing = False
 		self.mJumpCount = 0
+
+	def BlowBalloon(self):
+		if (not self.mBlowing):
+			if (self.mSoundState == 1):
+				self.mBlowingSound.play()
+
+			self.mImage = self.mBlowImage
+			self.mFrameRect = pygame.Rect(0, 0, 128, 128)
+			self.mBlowing = True
 
 	def Update(self, delta):
 		wasDead = self.mDead > 0
