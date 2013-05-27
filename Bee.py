@@ -1,18 +1,23 @@
 import math
-from Entity import *
+import random
+from Obstacle import *
 
-class Bee(Entity):
-	def __init__(self, kernel):
-		Entity.__init__(self, kernel)
+class Bee(Obstacle):
+	def __init__(self, kernel, level):
+		Obstacle.__init__(self, kernel, level)
 
 		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("Bee1.bmp")
-		self.mSolid = 1
-		self.mFloatMax = 3
-		self.mFloatDistance = 0
+		self.mSolid = 0
+		self.mFloatMax = 15
+		self.mFloatDistance = random.randrange(-1 * self.mFloatMax, self.mFloatMax)
 		self.mModifier = 1
+		self.mSharp = 1
+		self.mValue = 0
+		self.mDeadly = 1
 
 	def OnCollision(self, other):
-		print "BUZZ BUZZ"
+		##Audio and Animations here 
+		return
 
 	def Update(self, delta):
 		self.mFloatDistance += (self.mModifier)
@@ -20,14 +25,6 @@ class Bee(Entity):
 		if (abs(self.mFloatDistance) >= self.mFloatMax):
 			self.mModifier *= -1
 
-		self.mPosition[1] = self.mPosition[1] + self.mFloatDistance
+		self.mPosition[1] = self.mPosition[1] + self.mModifier
 
-		return Entity.Update(self, delta)
-
-
-
-
-
-
-
-
+		return Obstacle.Update(self, delta)

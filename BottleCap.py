@@ -1,18 +1,14 @@
-from math import cos
-from Entity import *
 
-class BottleCap(Entity):
-	def __init__(self, kernel):
-		Entity.__init__(self, kernel)
+from Collectable import *
 
-		self.mImage, self.mRect = self.mKernel.ImageManager().LoadImage("Bottlecap.bmp")
+class BottleCap(Collectable):
+	def __init__(self, kernel, level):
+		Collectable.__init__(self, kernel, level)
+		self.mCollideSound = self.mKernel.SoundManager().LoadSound("ding.wav")
 		self.mSolid = 1
-		self.mFloatMax = 3
+		self.mFloatMax = 0
 		self.mFloatDistance = 0
-		self.mModifier = 1
-
-	def OnCollision(self, other):
-		print "Ding!"
+		self.mModifier = 0
 
 	def Update(self, delta):
 		self.mFloatDistance += (self.mModifier)
@@ -20,8 +16,8 @@ class BottleCap(Entity):
 		if (abs(self.mFloatDistance) >= self.mFloatMax):
 			self.mModifier *= -1
 
-		self.mPosition[0] = self.mPosition[1] + self.mFloatDistance
+		self.mPosition[0] = self.mPosition[0] + self.mFloatDistance
 
-		return Entity.Update(self, delta)
+		return Collectable.Update(self, delta)
 
 		

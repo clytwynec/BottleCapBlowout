@@ -12,6 +12,7 @@ import Colors
 
 from pygame.locals import *
 from ImageManager import *
+from SoundManager import *
 
 class GameKernel:
 	def __init__(self):
@@ -21,7 +22,8 @@ class GameKernel:
 
 		self.mDisplaySurface = None
 		self.mTicker = pygame.time.Clock()
-		self.mImageManager = ImageManager()
+		self.mImageManager = ImageManager(self)
+		self.mSoundManager = SoundManager(self)
 
 	#####################################################
 	# InitializeDisplay
@@ -76,6 +78,9 @@ class GameKernel:
 	#####################################################
 	def ImageManager(self):
 		return self.mImageManager
+
+	def SoundManager(self):
+		return self.mSoundManager
 
 	#####################################################
 	# FlipDisplay
